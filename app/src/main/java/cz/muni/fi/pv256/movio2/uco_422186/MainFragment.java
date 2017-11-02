@@ -1,7 +1,6 @@
 package cz.muni.fi.pv256.movio2.uco_422186;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,8 +23,6 @@ public class MainFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        Log.d(TAG, "MainFragment.onAttach");
-
         try {
             mListener = (OnMovieSelectListener) context;
         } catch (ClassCastException e) {
@@ -36,8 +33,6 @@ public class MainFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.d(TAG, "MainFragment.onDetach");
-
         mListener = null;
     }
 
@@ -45,15 +40,12 @@ public class MainFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d(TAG, "MainFragment.onCreate");
-
         mContext = getActivity().getApplicationContext();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "MainFragment.onCreateView");
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         Button movie1Btn = (Button) view.findViewById(R.id.movie1_btn);
@@ -92,29 +84,5 @@ public class MainFragment extends Fragment {
 
     public interface OnMovieSelectListener {
         void onMovieSelect(Movie movie);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "MainFragment.onStart");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "MainFragment.onResume");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "MainFragment.onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "MainFragment.onStop");
     }
 }
