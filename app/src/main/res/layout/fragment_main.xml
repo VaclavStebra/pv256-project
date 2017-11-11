@@ -5,31 +5,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/accent"
+    android:background="#ffffff"
     android:orientation="vertical"
     tools:context="cz.muni.fi.pv256.movio2.uco_422186.MainActivity">
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/movie1_btn"
-        android:text="@string/movie1_btn"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/movie2_btn"
-        android:text="@string/movie2_btn"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/movie3_btn"
-        android:text="@string/movie3_btn"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_data"
+        android:visibility="gone"
+        android:id="@+id/empty_view"
+        android:padding="8dp"
+        android:textSize="16sp"/>
 
 </LinearLayout>

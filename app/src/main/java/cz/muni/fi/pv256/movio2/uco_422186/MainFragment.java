@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
 
@@ -21,6 +22,7 @@ public class MainFragment extends Fragment {
 
     private Context mContext;
     private OnMovieSelectListener mListener;
+    private RecyclerView mRecyclerView;
 
     @Override
     public void onAttach(Context context) {
@@ -51,48 +53,39 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(mContext, MainActivity.movies);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView = view.findViewById(R.id.recycler_view);
+        TextView emptyView = view.findViewById(R.id.empty_view);
 
-        Button movie1Btn = (Button) view.findViewById(R.id.movie1_btn);
-        Button movie2Btn = (Button) view.findViewById(R.id.movie2_btn);
-        Button movie3Btn = (Button) view.findViewById(R.id.movie3_btn);
+        if(MainActivity.movies.size() == 0) {
+            emptyView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }
 
-        movie1Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.onMovieSelect(MainActivity.movies.get(0));
-                }
-            }
-        });
+        mRecyclerView.setHasFixedSize(true);
 
-        movie2Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.onMovieSelect(MainActivity.movies.get(1));
-                }
-            }
-        });
+        OnMovieClickListener movieClickListener = new OnMovieClickListener();
 
-        movie3Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.onMovieSelect(MainActivity.movies.get(2));
-                }
-            }
-        });
-
+        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(mContext, MainActivity.movies, movieClickListener);
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         return view;
     }
 
     public interface OnMovieSelectListener {
         void onMovieSelect(Movie movie);
+    }
+
+    public class OnMovieClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            int itemPosition = mRecyclerView.getChildLayoutPosition(view);
+            Movie movie = MainActivity.movies.get(itemPosition);
+            mListener.onMovieSelect(movie);
+        }
     }
 }

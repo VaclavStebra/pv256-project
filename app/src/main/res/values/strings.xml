@@ -4,4 +4,6 @@
     <string name="movie1_btn">Movie 1</string>
     <string name="movie2_btn">Movie 2</string>
     <string name="movie3_btn">Movie 3</string>
+    <string name="preview">Preview</string>
+    <string name="no_data">No data (Check your network connection)</string>
 </resources>
