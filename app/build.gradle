@@ -15,6 +15,15 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            storeFile file(project.property("RELEASE_STORE_FILE"))
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
+    }
+
     defaultConfig {
         applicationId "cz.muni.fi.pv256.movio2.uco_422186"
         minSdkVersion 17
@@ -23,6 +32,7 @@ android {
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -30,6 +40,7 @@ android {
             packagingOptions {
                 exclude "**/values-ja/**"
             }
+            signingConfig signingConfigs.release
         }
 
         debug {
