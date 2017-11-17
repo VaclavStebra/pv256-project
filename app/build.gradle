@@ -31,6 +31,7 @@ android {
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [theme: '@style/PrimaryTheme', applicationName: 'Movio2']
     }
 
     buildTypes {
@@ -46,6 +47,21 @@ android {
         debug {
             applicationIdSuffix '.debug'
             versionNameSuffix ".${versionBuild}-${android.defaultConfig.versionCode}"
+        }
+    }
+
+    flavorDimensions "dim"
+
+    productFlavors {
+        first {
+            buildConfigField "boolean", "logging", "true"
+        }
+
+        second {
+            manifestPlaceholders = [theme: '@style/SecondaryTheme', applicationName: 'Movio2_secondary']
+            buildConfigField "boolean", "logging", "false"
+            applicationId "cz.muni.fi.pv256.movio2.uco_422186_2"
+
         }
     }
 }

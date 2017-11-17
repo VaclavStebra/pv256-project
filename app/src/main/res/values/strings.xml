@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">Movio2</string>
-
     <string name="movie1_btn">Movie 1</string>
     <string name="movie2_btn">Movie 2</string>
     <string name="movie3_btn">Movie 3</string>
