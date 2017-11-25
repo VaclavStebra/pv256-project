@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Movio2</string>
+
+    <string name="change_theme">Change Theme</string>
+
+    <string name="saved_theme">saved_theme</string>
 </resources>
