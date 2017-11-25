@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void toggleTheme() {
         int theme = getSavedTheme();
-        saveNewTheme(getNewTheme(theme));
+        saveTheme(getNewTheme(theme));
         restartActivity();
     }
 
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 : R.style.PrimaryTheme;
     }
 
-    private void saveNewTheme(int newTheme) {
+    private void saveTheme(int newTheme) {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt(getString(R.string.saved_theme), newTheme);
