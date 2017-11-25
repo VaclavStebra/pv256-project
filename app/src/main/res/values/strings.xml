@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Movio2</string>
 
-    <string name="change_theme">Change Theme</string>
-
-    <string name="saved_theme">saved_theme</string>
+    <string name="movie1_btn">Movie 1</string>
+    <string name="movie2_btn">Movie 2</string>
+    <string name="movie3_btn">Movie 3</string>
 </resources>
