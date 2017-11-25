@@ -159,5 +159,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
     protected void onRestart() {
         super.onRestart();
         Log.d(TAG, "MainActivity.onRestart");
+        Log.d(TAG, "MainActivity.onCreate");
     }
 }
