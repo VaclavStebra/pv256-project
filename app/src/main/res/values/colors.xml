@@ -6,10 +6,12 @@
 
     <color name="primary">#8bc34a</color>
     <color name="primary_dark">#689f38</color>
-    <color name="accent">#448aff</color>
+    <color name="accent">#000000</color>
 
     <color name="secondary">#607D8B</color>
     <color name="secondary_dark">#455A64</color>
     <color name="secondary_accent">#9F8274</color>
+
+    <color name="opaque_black">#33000000</color>
 
 </resources>
