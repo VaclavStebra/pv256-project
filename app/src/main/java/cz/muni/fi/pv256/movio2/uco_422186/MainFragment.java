@@ -23,6 +23,7 @@ public class MainFragment extends Fragment {
     private Context mContext;
     private OnMovieSelectListener mListener;
     private RecyclerView mRecyclerView;
+    private TextView mEmptyView;
 
     @Override
     public void onAttach(Context context) {
@@ -56,25 +57,36 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
-        TextView emptyView = view.findViewById(R.id.empty_view);
+        mEmptyView = view.findViewById(R.id.empty_view);
 
-        if(MainActivity.movies.size() == 0) {
-            emptyView.setVisibility(View.VISIBLE);
-            mRecyclerView.setVisibility(View.GONE);
-        } else {
-            emptyView.setVisibility(View.GONE);
-            mRecyclerView.setVisibility(View.VISIBLE);
-        }
+        swapViews();
 
         mRecyclerView.setHasFixedSize(true);
 
         OnMovieClickListener movieClickListener = new OnMovieClickListener();
 
         MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(mContext, MainActivity.movies, movieClickListener);
-        mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(adapter);
         return view;
+    }
+
+    public void moviesUpdated() {
+        OnMovieClickListener movieClickListener = new OnMovieClickListener();
+        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(mContext, MainActivity.movies, movieClickListener);
+        mRecyclerView.swapAdapter(adapter, false);
+        swapViews();
+    }
+
+    public void swapViews() {
+        if (MainActivity.movies.size() == 0) {
+            mEmptyView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        } else {
+            mEmptyView.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
     public interface OnMovieSelectListener {

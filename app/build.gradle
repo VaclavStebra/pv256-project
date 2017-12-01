@@ -33,6 +33,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [theme: '@style/PrimaryTheme', applicationName: 'Movio2']
         resConfigs "en", "cs"
+        buildConfigField "String", "API_KEY", API_KEY
     }
 
     buildTypes {
@@ -86,6 +87,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:27.0.2'
     compile 'com.android.support:design:27.0.2'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'com.google.code.gson:gson:2.8.2'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-all:1.10.19'
