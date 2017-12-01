@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
+import cz.muni.fi.pv256.movio2.uco_422186.tasks.FetchNewMoviesTask;
 import cz.muni.fi.pv256.movio2.uco_422186.tasks.FetchTheatreMoviesTask;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.OnMovieSelectListener {
@@ -13,6 +14,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private FetchTheatreMoviesTask mFetchTheatreMoviesTask;
+    private FetchNewMoviesTask mFetchNewMoviesTask;
 
     private boolean mTwoPane;
 
@@ -42,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
             mFetchTheatreMoviesTask = new FetchTheatreMoviesTask(MainActivity.this);
             mFetchTheatreMoviesTask.execute();
         }
+        if (mFetchNewMoviesTask == null) {
+            mFetchNewMoviesTask = new FetchNewMoviesTask(MainActivity.this);
+            mFetchNewMoviesTask.execute();
+        }
     }
 
     @Override
@@ -67,13 +73,26 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
         if (mFetchTheatreMoviesTask != null) {
             mFetchTheatreMoviesTask.cancel(true);
         }
+
+        if (mFetchTheatreMoviesTask != null) {
+            mFetchNewMoviesTask.cancel(true);
+        }
     }
 
-    public void onTaskFinished() {
+    public void onTheatreTaskFinished() {
         mFetchTheatreMoviesTask = null;
+        updateMoviesView();
+    }
+
+    private void updateMoviesView() {
         MainFragment mainFragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_main);
         if (mainFragment != null) {
             mainFragment.moviesUpdated();
         }
+    }
+
+    public void onNewMoviesTaskFinished() {
+        mFetchNewMoviesTask = null;
+        updateMoviesView();
     }
 }

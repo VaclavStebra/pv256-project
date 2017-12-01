@@ -7,4 +7,5 @@ import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
 
 public class Movies {
     public static List<Movie> theaterMovies = new ArrayList<>();
+    public static List<Movie> newMovies = new ArrayList<>();
 }
