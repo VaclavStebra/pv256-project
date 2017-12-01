@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import cz.muni.fi.pv256.movio2.uco_422186.data.Movies;
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
 
 public class DetailFragment extends Fragment {
@@ -44,7 +45,7 @@ public class DetailFragment extends Fragment {
         TextView movieTitle = (TextView) view.findViewById(R.id.movie_title);
 
         if (mMovie == null) {
-            mMovie = MainActivity.movies.get(0);
+            mMovie = Movies.theaterMovies.get(0);
         }
 
         movieTitle.setText(mMovie.getTitle());

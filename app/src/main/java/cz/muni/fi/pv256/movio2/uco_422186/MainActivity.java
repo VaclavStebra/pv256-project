@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import cz.muni.fi.pv256.movio2.uco_422186.data.Movies;
 import cz.muni.fi.pv256.movio2.uco_422186.dto.APIResult;
 import cz.muni.fi.pv256.movio2.uco_422186.dto.MovieDTO;
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
@@ -35,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
     private FetchTask mFetchTask;
 
     private boolean mTwoPane;
-    public static List<Movie> movies = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,9 +147,9 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
                 }
                 Gson gson = new Gson();
                 APIResult result = gson.fromJson(response.body().string(), APIResult.class);
-                movies = new ArrayList<>();
+                Movies.theaterMovies = new ArrayList<>();
                 for (MovieDTO movieDTO : result.movies) {
-                    movies.add(new Movie(getCurrentTime().getTime(), movieDTO.posterPath, movieDTO.title, movieDTO.backdropPath, movieDTO.popularity / 20));
+                    Movies.theaterMovies.add(new Movie(getCurrentTime().getTime(), movieDTO.posterPath, movieDTO.title, movieDTO.backdropPath, movieDTO.popularity / 20));
                 }
             } catch (IOException e) {
                 e.printStackTrace();

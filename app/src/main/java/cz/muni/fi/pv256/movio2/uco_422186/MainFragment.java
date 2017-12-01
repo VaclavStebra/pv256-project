@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import cz.muni.fi.pv256.movio2.uco_422186.data.Movies;
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
 
 public class MainFragment extends Fragment {
@@ -65,7 +66,7 @@ public class MainFragment extends Fragment {
 
         OnMovieClickListener movieClickListener = new OnMovieClickListener();
 
-        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(mContext, MainActivity.movies, movieClickListener);
+        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(mContext, Movies.theaterMovies, movieClickListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(adapter);
@@ -74,13 +75,13 @@ public class MainFragment extends Fragment {
 
     public void moviesUpdated() {
         OnMovieClickListener movieClickListener = new OnMovieClickListener();
-        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(mContext, MainActivity.movies, movieClickListener);
+        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(mContext, Movies.theaterMovies, movieClickListener);
         mRecyclerView.swapAdapter(adapter, false);
         swapViews();
     }
 
     public void swapViews() {
-        if (MainActivity.movies.size() == 0) {
+        if (Movies.theaterMovies.size() == 0) {
             mEmptyView.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
         } else {
@@ -98,7 +99,7 @@ public class MainFragment extends Fragment {
         @Override
         public void onClick(View view) {
             int itemPosition = mRecyclerView.getChildLayoutPosition(view);
-            Movie movie = MainActivity.movies.get(itemPosition);
+            Movie movie = Movies.theaterMovies.get(itemPosition);
             mListener.onMovieSelect(movie);
         }
     }
