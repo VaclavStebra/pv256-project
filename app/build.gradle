@@ -1,20 +1,65 @@
+def versionMajor = 0
+def versionMinor = 1
+def versionPatch = 0
+def versionBuild = 0
+
 apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
     buildToolsVersion "26.0.2"
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "$project.name-$variant.name-${variant.versionName}.apk"
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(project.property("RELEASE_STORE_FILE"))
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
+    }
+
     defaultConfig {
         applicationId "cz.muni.fi.pv256.movio2.uco_422186"
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [theme: '@style/PrimaryTheme', applicationName: 'Movio2']
+        resConfigs "en", "cs"
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix ".${versionBuild}-${android.defaultConfig.versionCode}"
+        }
+    }
+
+    flavorDimensions "dim"
+
+    productFlavors {
+        first {
+            buildConfigField "boolean", "logging", "true"
+        }
+
+        second {
+            manifestPlaceholders = [theme: '@style/SecondaryTheme', applicationName: 'Movio2_secondary']
+            buildConfigField "boolean", "logging", "false"
+            applicationId "cz.muni.fi.pv256.movio2.uco_422186_2"
+
         }
     }
 }
@@ -36,10 +81,10 @@ dependencies {
         exclude group: 'com.android.support'
     }
 
-    compile 'com.android.support:appcompat-v7:27.0'
+    compile 'com.android.support:appcompat-v7:27.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:recyclerview-v7:27.0.0'
-    compile 'com.android.support:design:27.0.0'
+    compile 'com.android.support:recyclerview-v7:27.0.1'
+    compile 'com.android.support:design:27.0.1'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-all:1.10.19'

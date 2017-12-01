@@ -1,6 +1,7 @@
 package cz.muni.fi.pv256.movio2.uco_422186;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,7 +29,9 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "Inflating new view");
+        if (BuildConfig.logging) {
+            Log.d(TAG, "Inflating new view");
+        }
 
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.movies_list_item, parent, false);
@@ -38,7 +41,9 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAd
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Log.d(TAG, "Binding to existing view");
+        if (BuildConfig.logging) {
+            Log.d(TAG, "Binding to existing view");
+        }
 
         Movie movie = mMovies.get(position);
         holder.title.setText(movie.getTitle());

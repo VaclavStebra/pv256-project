@@ -1,0 +1,7 @@
+<resources>
+    <string name="movie1_btn">a 1</string>
+    <string name="movie2_btn">a 2</string>
+    <string name="movie3_btn">a 3</string>
+    <string name="preview">b</string>
+    <string name="no_data">c</string>
+</resources>
