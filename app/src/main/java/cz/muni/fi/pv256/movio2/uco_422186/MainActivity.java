@@ -1,5 +1,8 @@
 package cz.muni.fi.pv256.movio2.uco_422186;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -46,6 +49,19 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
     }
 
     public void fetchMovies() {
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        Notification n = new Notification.Builder(this)
+                .setContentTitle("Fetching movie list")
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentIntent(pIntent)
+                .setAutoCancel(true)
+                .build();
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(0, n);
+
         Intent fetchTheatreMoviesIntent = new Intent(this, FetchMoviesIntentService.class);
         fetchTheatreMoviesIntent.putExtra(FetchMoviesIntentService.MOVIES_CATEGORY, FetchMoviesIntentService.THEATRE_MOVIES);
         startService(fetchTheatreMoviesIntent);
@@ -85,6 +101,19 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
         @Override
         public void onReceive(Context context, Intent intent) {
             updateMoviesView();
+
+            Intent appIntent = new Intent(MainActivity.this, MainActivity.class);
+            PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, 0, appIntent, 0);
+
+            Notification n = new Notification.Builder(MainActivity.this)
+                    .setContentTitle("Movie list fetched")
+                    .setSmallIcon(R.mipmap.ic_launcher_round)
+                    .setContentIntent(pIntent)
+                    .setAutoCancel(true)
+                    .build();
+
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.notify(0, n);
         }
     }
 }
