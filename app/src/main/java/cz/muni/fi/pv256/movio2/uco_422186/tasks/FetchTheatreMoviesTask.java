@@ -16,6 +16,7 @@ import cz.muni.fi.pv256.movio2.uco_422186.MainActivity;
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movies;
 import cz.muni.fi.pv256.movio2.uco_422186.dto.APIResult;
 import cz.muni.fi.pv256.movio2.uco_422186.dto.MovieDTO;
+import cz.muni.fi.pv256.movio2.uco_422186.helpers.DtoMapper;
 import cz.muni.fi.pv256.movio2.uco_422186.helpers.FetchHelpers;
 import cz.muni.fi.pv256.movio2.uco_422186.helpers.TimeHelpers;
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
@@ -56,7 +57,7 @@ public class FetchTheatreMoviesTask extends AsyncTask<Void, Void, Void> {
     private void setTheatreMovies(APIResult result) {
         Movies.theaterMovies = new ArrayList<>();
         for (MovieDTO movieDTO : result.movies) {
-            Movies.theaterMovies.add(new Movie(TimeHelpers.getCurrentTime().getTime(), movieDTO.posterPath, movieDTO.title, movieDTO.backdropPath, movieDTO.popularity / 20));
+            Movies.theaterMovies.add(DtoMapper.mapDTOToMovie(movieDTO));
         }
     }
 

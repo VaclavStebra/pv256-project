@@ -37,4 +37,8 @@ public class TimeHelpers {
     private static String formatDateForRequest(Date date) {
         return new SimpleDateFormat("yyyy-MM-dd").format(date);
     }
+
+    public static String formatDateForDetailView(long time) {
+        return new SimpleDateFormat("yyyy-MM-dd").format(new Date(time));
+    }
 }

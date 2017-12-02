@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movies;
+import cz.muni.fi.pv256.movio2.uco_422186.helpers.TimeHelpers;
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
 
 public class DetailFragment extends Fragment {
@@ -47,6 +48,9 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
         TextView movieTitle = view.findViewById(R.id.movie_title);
+        TextView movieRelease = view.findViewById(R.id.movie_release);
+        TextView moviePopularity = view.findViewById(R.id.movie_popularity);
+        TextView movieOverview = view.findViewById(R.id.movie_overview);
         ImageView movieImage = view.findViewById(R.id.movie_image);
 
         if (mMovie == null) {
@@ -54,6 +58,10 @@ public class DetailFragment extends Fragment {
         }
 
         movieTitle.setText(mMovie.getTitle());
+        movieRelease.setText(TimeHelpers.formatDateForDetailView(mMovie.getReleaseDate()));
+        moviePopularity.setText(String.format("%.1f", mMovie.getPopularity()) + " / 5");
+        movieOverview.setText(mMovie.getOverview());
+
         RequestOptions options = new RequestOptions();
         options.centerCrop();
         options.placeholder(R.drawable.placeholder);

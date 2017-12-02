@@ -13,4 +13,6 @@ public class MovieDTO {
     public String posterPath;
     @SerializedName("popularity")
     public float popularity;
+    @SerializedName("overview")
+    public String overview;
 }
