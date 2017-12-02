@@ -6,7 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +77,16 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 movieViewHolder.title.setText(movie.getTitle());
                 movieViewHolder.rating.setText(String.format("%.1f", movie.getPopularity()));
                 movieViewHolder.itemView.setTag(movie);
+
+                RequestOptions options = new RequestOptions();
+                options.centerCrop();
+                options.placeholder(R.drawable.placeholder);
+                Glide
+                    .with(mContext)
+                    .load(Movie.BASE_BACKDROP_URL + movie.getBackdrop())
+                    .apply(options)
+                    .into(movieViewHolder.backdrop);
+
                 break;
             case TYPE_HEADER:
                 String header = mItems.get(position).mHeader;
@@ -95,12 +109,14 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     static class MovieViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public TextView rating;
+        public ImageView backdrop;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
 
             title = itemView.findViewById(R.id.movie_list_title);
             rating = itemView.findViewById(R.id.movie_list_rating);
+            backdrop = itemView.findViewById(R.id.movie_list_image);
         }
     }
 
