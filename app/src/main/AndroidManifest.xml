@@ -20,6 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MovieDetailActivity" />
+
+        <service android:name=".services.FetchMoviesIntentService" />
     </application>
 
 </manifest>

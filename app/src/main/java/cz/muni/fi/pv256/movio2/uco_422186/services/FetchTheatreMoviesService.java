@@ -1,6 +1,8 @@
 package cz.muni.fi.pv256.movio2.uco_422186.services;
 
-import java.lang.ref.WeakReference;
+import android.content.Context;
+import android.content.Intent;
+
 import java.util.ArrayList;
 
 import cz.muni.fi.pv256.movio2.uco_422186.MainActivity;
@@ -17,10 +19,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FetchTheatreMoviesService {
 
-    private final WeakReference<MainActivity> mMainActivityWeakReference;
+    private Context mContext;
 
-    public FetchTheatreMoviesService(MainActivity mainActivity) {
-        mMainActivityWeakReference = new WeakReference<MainActivity>(mainActivity);
+    public FetchTheatreMoviesService(Context context) {
+        mContext = context;
     }
 
     public void fetch() {
@@ -55,12 +57,9 @@ public class FetchTheatreMoviesService {
     }
 
     private void notifyActivity() {
-        MainActivity activity = mMainActivityWeakReference.get();
-
-        if (activity == null) {
-            return;
-        }
-
-        activity.onTheatreMoviesFetchFinished();
+       Intent broadcastIntent = new Intent();
+       broadcastIntent.setAction(MainActivity.ResponseReceiver.ACTION_RESPONSE);
+       broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+       mContext.sendBroadcast(broadcastIntent);
     }
 }

@@ -1,20 +1,21 @@
 package cz.muni.fi.pv256.movio2.uco_422186;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
-import cz.muni.fi.pv256.movio2.uco_422186.services.FetchNewMoviesService;
-import cz.muni.fi.pv256.movio2.uco_422186.services.FetchTheatreMoviesService;
+import cz.muni.fi.pv256.movio2.uco_422186.services.FetchMoviesIntentService;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.OnMovieSelectListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private FetchTheatreMoviesService mFetchTheatreMoviesService;
-    private FetchNewMoviesService mFetchNewMoviesService;
+    private ResponseReceiver mReceiver;
 
     private boolean mTwoPane;
 
@@ -37,18 +38,21 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
             mTwoPane = false;
             getSupportActionBar().setElevation(0f);
         }
+
+        IntentFilter filter = new IntentFilter(ResponseReceiver.ACTION_RESPONSE);
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        mReceiver = new ResponseReceiver();
+        registerReceiver(mReceiver, filter);
     }
 
     public void fetchMovies() {
-        if (mFetchTheatreMoviesService == null) {
-            mFetchTheatreMoviesService = new FetchTheatreMoviesService(MainActivity.this);
-            mFetchTheatreMoviesService.fetch();
-        }
+        Intent fetchTheatreMoviesIntent = new Intent(this, FetchMoviesIntentService.class);
+        fetchTheatreMoviesIntent.putExtra(FetchMoviesIntentService.MOVIES_CATEGORY, FetchMoviesIntentService.THEATRE_MOVIES);
+        startService(fetchTheatreMoviesIntent);
 
-        if (mFetchNewMoviesService == null) {
-            mFetchNewMoviesService = new FetchNewMoviesService(MainActivity.this);
-            mFetchNewMoviesService.fetch();
-        }
+        Intent fetchNewMoviesIntent = new Intent(this, FetchMoviesIntentService.class);
+        fetchNewMoviesIntent.putExtra(FetchMoviesIntentService.MOVIES_CATEGORY, FetchMoviesIntentService.NEW_MOVIES);
+        startService(fetchNewMoviesIntent);
     }
 
     @Override
@@ -67,11 +71,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
         }
     }
 
-    public void onTheatreMoviesFetchFinished() {
-        mFetchTheatreMoviesService = null;
-        updateMoviesView();
-    }
-
     private void updateMoviesView() {
         MainFragment mainFragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_main);
         if (mainFragment != null) {
@@ -79,8 +78,13 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
         }
     }
 
-    public void onNewMoviesFetchFinished() {
-        mFetchNewMoviesService = null;
-        updateMoviesView();
+    public class ResponseReceiver extends BroadcastReceiver {
+        public static final String ACTION_RESPONSE =
+                "cz.muni.fi.pv256.movio2.uco_422186.ACTION_RESPONSE";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateMoviesView();
+        }
     }
 }
