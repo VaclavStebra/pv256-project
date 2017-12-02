@@ -4,4 +4,6 @@
     <string name="movie3_btn">a 3</string>
     <string name="preview">b</string>
     <string name="no_data">c</string>
+    <string name="theatre_movies">d</string>
+    <string name="new_movies">q</string>
 </resources>

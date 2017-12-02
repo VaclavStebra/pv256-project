@@ -11,8 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.List;
 
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movies;
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
@@ -20,11 +21,10 @@ import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
 public class MainFragment extends Fragment {
 
     private static final String TAG = MainFragment.class.getSimpleName();
-
     private Context mContext;
     private OnMovieSelectListener mListener;
-    private RecyclerView mRecyclerView;
-    private TextView mEmptyView;
+    private RecyclerView mTheatreMoviesRecyclerView;
+    private TextView mEmptyTheatreMoviesView;
 
     @Override
     public void onAttach(Context context) {
@@ -57,36 +57,43 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        mRecyclerView = view.findViewById(R.id.recycler_view);
-        mEmptyView = view.findViewById(R.id.empty_view);
+        mTheatreMoviesRecyclerView = view.findViewById(R.id.recycler_view);
+        mEmptyTheatreMoviesView = view.findViewById(R.id.empty_view);
 
         swapViews();
 
-        mRecyclerView.setHasFixedSize(true);
-
-        OnMovieClickListener movieClickListener = new OnMovieClickListener();
-
-        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(mContext, Movies.theaterMovies, movieClickListener);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setAdapter(adapter);
+        setupRecyclerView();
         return view;
     }
 
+    private void setupRecyclerView() {
+        mTheatreMoviesRecyclerView.setHasFixedSize(true);
+        mTheatreMoviesRecyclerView.setNestedScrollingEnabled(false);
+        mTheatreMoviesRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mTheatreMoviesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        OnMovieClickListener clickListener = new OnMovieClickListener();
+        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(mContext, Movies.theaterMovies, Movies.newMovies, clickListener);
+        mTheatreMoviesRecyclerView.setAdapter(adapter);
+    }
+
     public void moviesUpdated() {
-        OnMovieClickListener movieClickListener = new OnMovieClickListener();
-        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(mContext, Movies.theaterMovies, movieClickListener);
-        mRecyclerView.swapAdapter(adapter, false);
+        swapAdapter();
         swapViews();
     }
 
+    private void swapAdapter() {
+        OnMovieClickListener clickListener = new OnMovieClickListener();
+        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(mContext, Movies.theaterMovies, Movies.newMovies, clickListener);
+        mTheatreMoviesRecyclerView.swapAdapter(adapter, false);
+    }
+
     public void swapViews() {
-        if (Movies.theaterMovies.size() == 0) {
-            mEmptyView.setVisibility(View.VISIBLE);
-            mRecyclerView.setVisibility(View.GONE);
+        if (Movies.theaterMovies.size() == 0 && Movies.newMovies.size() == 0) {
+            mEmptyTheatreMoviesView.setVisibility(View.VISIBLE);
+            mTheatreMoviesRecyclerView.setVisibility(View.GONE);
         } else {
-            mEmptyView.setVisibility(View.GONE);
-            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyTheatreMoviesView.setVisibility(View.GONE);
+            mTheatreMoviesRecyclerView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -95,11 +102,9 @@ public class MainFragment extends Fragment {
     }
 
     public class OnMovieClickListener implements View.OnClickListener {
-
         @Override
         public void onClick(View view) {
-            int itemPosition = mRecyclerView.getChildLayoutPosition(view);
-            Movie movie = Movies.theaterMovies.get(itemPosition);
+            Movie movie = (Movie) view.getTag();
             mListener.onMovieSelect(movie);
         }
     }
