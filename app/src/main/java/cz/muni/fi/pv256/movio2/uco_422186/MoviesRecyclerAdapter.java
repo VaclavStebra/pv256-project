@@ -83,7 +83,7 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 options.placeholder(R.drawable.placeholder);
                 Glide
                     .with(mContext)
-                    .load(Movie.BASE_BACKDROP_URL + movie.getBackdrop())
+                    .load(Movie.BASE_COVER_URL + movie.getCoverPath())
                     .apply(options)
                     .into(movieViewHolder.backdrop);
 

@@ -7,7 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movies;
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
@@ -42,13 +46,22 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
-        TextView movieTitle = (TextView) view.findViewById(R.id.movie_title);
+        TextView movieTitle = view.findViewById(R.id.movie_title);
+        ImageView movieImage = view.findViewById(R.id.movie_image);
 
         if (mMovie == null) {
             mMovie = Movies.theaterMovies.get(0);
         }
 
         movieTitle.setText(mMovie.getTitle());
+        RequestOptions options = new RequestOptions();
+        options.centerCrop();
+        options.placeholder(R.drawable.placeholder);
+        Glide
+                .with(mContext)
+                .load(Movie.BASE_BACKDROP_URL + mMovie.getBackdrop())
+                .apply(options)
+                .into(movieImage);
 
         return view;
     }

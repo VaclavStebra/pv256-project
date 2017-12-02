@@ -11,7 +11,7 @@ public class Movie implements Parcelable {
     private String mBackdrop;
     private float mPopularity;
     public static final String BASE_BACKDROP_URL = "http://image.tmdb.org/t/p/w300/";
-    public static final String BASE_COVER_PATH = "http://image.tmdb.org/t/p/w154/";
+    public static final String BASE_COVER_URL = "http://image.tmdb.org/t/p/w500/";
 
     public Movie(long releaseDate, String coverPath, String title, String backdrop, float popularity) {
         this.mReleaseDate = releaseDate;
