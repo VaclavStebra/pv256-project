@@ -6,15 +6,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
-import cz.muni.fi.pv256.movio2.uco_422186.tasks.FetchNewMoviesTask;
-import cz.muni.fi.pv256.movio2.uco_422186.tasks.FetchTheatreMoviesTask;
+import cz.muni.fi.pv256.movio2.uco_422186.services.FetchNewMoviesService;
+import cz.muni.fi.pv256.movio2.uco_422186.services.FetchTheatreMoviesService;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.OnMovieSelectListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private FetchTheatreMoviesTask mFetchTheatreMoviesTask;
-    private FetchNewMoviesTask mFetchNewMoviesTask;
+    private FetchTheatreMoviesService mFetchTheatreMoviesService;
+    private FetchNewMoviesService mFetchNewMoviesService;
 
     private boolean mTwoPane;
 
@@ -40,13 +40,14 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
     }
 
     public void fetchMovies() {
-        if (mFetchTheatreMoviesTask == null) {
-            mFetchTheatreMoviesTask = new FetchTheatreMoviesTask(MainActivity.this);
-            mFetchTheatreMoviesTask.execute();
+        if (mFetchTheatreMoviesService == null) {
+            mFetchTheatreMoviesService = new FetchTheatreMoviesService(MainActivity.this);
+            mFetchTheatreMoviesService.fetch();
         }
-        if (mFetchNewMoviesTask == null) {
-            mFetchNewMoviesTask = new FetchNewMoviesTask(MainActivity.this);
-            mFetchNewMoviesTask.execute();
+
+        if (mFetchNewMoviesService == null) {
+            mFetchNewMoviesService = new FetchNewMoviesService(MainActivity.this);
+            mFetchNewMoviesService.fetch();
         }
     }
 
@@ -66,21 +67,8 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (mFetchTheatreMoviesTask != null) {
-            mFetchTheatreMoviesTask.cancel(true);
-        }
-
-        if (mFetchTheatreMoviesTask != null) {
-            mFetchNewMoviesTask.cancel(true);
-        }
-    }
-
-    public void onTheatreTaskFinished() {
-        mFetchTheatreMoviesTask = null;
+    public void onTheatreMoviesFetchFinished() {
+        mFetchTheatreMoviesService = null;
         updateMoviesView();
     }
 
@@ -91,8 +79,8 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
         }
     }
 
-    public void onNewMoviesTaskFinished() {
-        mFetchNewMoviesTask = null;
+    public void onNewMoviesFetchFinished() {
+        mFetchNewMoviesService = null;
         updateMoviesView();
     }
 }
