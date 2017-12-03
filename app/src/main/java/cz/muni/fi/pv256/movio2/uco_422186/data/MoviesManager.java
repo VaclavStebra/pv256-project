@@ -64,6 +64,20 @@ public class MoviesManager {
         return Collections.emptyList();
     }
 
+    public Movie getMovie(Movie movie) {
+        Cursor cursor = mContext.getContentResolver().query(MoviesContract.MovieEntry.CONTENT_URI, MOVIES_COLUMNS, WHERE_ID, new String[] {String.valueOf(movie.getId())}, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            Movie foundMovie = null;
+            try {
+                foundMovie = getMovie(cursor);
+            } finally {
+                cursor.close();
+            }
+            return foundMovie;
+        }
+        return null;
+    }
+
     private ContentValues prepareMovieValues(Movie movie) {
         ContentValues values = new ContentValues();
         values.put(MoviesContract.MovieEntry._ID, movie.getId());

@@ -11,10 +11,12 @@ import java.util.ArrayList;
 import cz.muni.fi.pv256.movio2.uco_422186.MainActivity;
 import cz.muni.fi.pv256.movio2.uco_422186.R;
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movies;
+import cz.muni.fi.pv256.movio2.uco_422186.data.MoviesManager;
 import cz.muni.fi.pv256.movio2.uco_422186.dto.APIResult;
 import cz.muni.fi.pv256.movio2.uco_422186.dto.MovieDTO;
 import cz.muni.fi.pv256.movio2.uco_422186.helpers.DtoMapper;
 import cz.muni.fi.pv256.movio2.uco_422186.helpers.TimeHelpers;
+import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,7 +73,11 @@ public class FetchTheatreMoviesService {
     private void setThatreMovies(APIResult result) {
         Movies.theaterMovies = new ArrayList<>();
         for (MovieDTO movieDTO : result.movies) {
-            Movies.theaterMovies.add(DtoMapper.mapDTOToMovie(movieDTO));
+            Movie movie = DtoMapper.mapDTOToMovie(movieDTO);
+            MoviesManager moviesManager = new MoviesManager(mContext);
+            Movie dbMovie = moviesManager.getMovie(movie);
+            movie.setFavorite(dbMovie != null);
+            Movies.theaterMovies.add(movie);
         }
     }
 

@@ -61,6 +61,19 @@ public class TestMoviesManager extends AndroidTestCase {
         assertEquals(expectedMovies, movies);
     }
 
+    public void testGetMovie() throws Exception {
+        Movie movie1 = createMovie(1, TimeHelpers.getCurrentTime().getTime(),null, "Movie 1", null, 1f, "Overview 1");
+        Movie movie2 = createMovie(2, TimeHelpers.getCurrentTime().getTime(),null, "Movie 2", null, 2f, "Overview 2");
+
+        mManager.createMovie(movie1);
+
+        Movie movie = mManager.getMovie(movie1);
+        Movie notFoundMovie = mManager.getMovie(movie2);
+
+        assertEquals(movie1, movie);
+        assertNull(notFoundMovie);
+    }
+
     private Movie createMovie(long id, long releaseDate, String coverPath, String title, String backdrop, float popularity, String overview) {
         return new Movie(id, releaseDate, coverPath, title, backdrop, popularity, overview);
     }
