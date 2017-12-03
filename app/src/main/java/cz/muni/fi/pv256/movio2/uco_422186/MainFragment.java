@@ -66,6 +66,12 @@ public class MainFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        moviesUpdated();
+    }
+
     private void setupRecyclerView() {
         mTheatreMoviesRecyclerView.setHasFixedSize(true);
         mTheatreMoviesRecyclerView.setNestedScrollingEnabled(false);

@@ -72,5 +72,18 @@
 
         app:layout_anchorGravity="bottom|right|end"/>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_remove_white_24dp"
+        app:layout_anchor="@id/movie_image"
+        app:backgroundTint="@color/secondary_accent"
+
+        app:layout_anchorGravity="bottom|right|end"/>
+
 
 </android.support.design.widget.CoordinatorLayout>

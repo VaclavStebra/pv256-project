@@ -12,6 +12,7 @@ public class Movie implements Parcelable {
     private String mBackdrop;
     private float mPopularity;
     private String mOverview;
+    private boolean mIsFavorite;
     public static final String BASE_BACKDROP_URL = "http://image.tmdb.org/t/p/w300/";
     public static final String BASE_COVER_URL = "http://image.tmdb.org/t/p/w500/";
 
@@ -19,12 +20,18 @@ public class Movie implements Parcelable {
 
     public Movie(long id, long releaseDate, String coverPath, String title, String backdrop, float popularity, String overview) {
         mId = id;
-        this.mReleaseDate = releaseDate;
-        this.mCoverPath = coverPath;
-        this.mTitle = title;
-        this.mBackdrop = backdrop;
-        this.mPopularity = popularity;
-        this.mOverview = overview;
+        mReleaseDate = releaseDate;
+        mCoverPath = coverPath;
+        mTitle = title;
+        mBackdrop = backdrop;
+        mPopularity = popularity;
+        mOverview = overview;
+        mIsFavorite = false;
+    }
+
+    public Movie(long id, long releaseDate, String coverPath, String title, String backdrop, float popularity, String overview, boolean isFavorite) {
+        this(id, releaseDate, coverPath, title, backdrop, popularity, overview);
+        mIsFavorite = isFavorite;
     }
 
     private Movie(Parcel in) {
@@ -35,6 +42,7 @@ public class Movie implements Parcelable {
         mBackdrop = in.readString();
         mPopularity = in.readFloat();
         mOverview = in.readString();
+        mIsFavorite = in.readByte() != 0;
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -63,6 +71,7 @@ public class Movie implements Parcelable {
         dest.writeString(mBackdrop);
         dest.writeFloat(mPopularity);
         dest.writeString(mOverview);
+        dest.writeByte((byte) (mIsFavorite ? 1 : 0));
     }
 
     public long getId() {
@@ -119,6 +128,14 @@ public class Movie implements Parcelable {
 
     public void setOverview(String overview) {
         mOverview = overview;
+    }
+
+    public boolean isFavorite() {
+        return mIsFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        mIsFavorite = favorite;
     }
 
     @Override
