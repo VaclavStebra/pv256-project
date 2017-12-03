@@ -6,4 +6,6 @@
     <string name="no_data">No data (Check your network connection)</string>
     <string name="theatre_movies">In Theatres</string>
     <string name="new_movies">New movies</string>
+
+    <string name="content_authority" translatable="false">cz.muni.fi.pv256.movio2.uco_422186.app</string>
 </resources>

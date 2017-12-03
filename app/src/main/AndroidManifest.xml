@@ -19,9 +19,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".MovieDetailActivity" />
 
         <service android:name=".services.FetchMoviesIntentService" />
+        <provider
+            android:authorities="@string/content_authority"
+            android:name=".data.MoviesProvider"
+            android:exported="false" />
     </application>
 
 </manifest>

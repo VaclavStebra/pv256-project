@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 public class Movie implements Parcelable {
 
+    private long mId;
     private long mReleaseDate;
     private String mCoverPath;
     private String mTitle;
@@ -14,7 +15,10 @@ public class Movie implements Parcelable {
     public static final String BASE_BACKDROP_URL = "http://image.tmdb.org/t/p/w300/";
     public static final String BASE_COVER_URL = "http://image.tmdb.org/t/p/w500/";
 
-    public Movie(long releaseDate, String coverPath, String title, String backdrop, float popularity, String overview) {
+    public Movie() {}
+
+    public Movie(long id, long releaseDate, String coverPath, String title, String backdrop, float popularity, String overview) {
+        mId = id;
         this.mReleaseDate = releaseDate;
         this.mCoverPath = coverPath;
         this.mTitle = title;
@@ -24,6 +28,7 @@ public class Movie implements Parcelable {
     }
 
     private Movie(Parcel in) {
+        mId = in.readLong();
         mReleaseDate = in.readLong();
         mCoverPath = in.readString();
         mTitle = in.readString();
@@ -51,12 +56,21 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(mId);
         dest.writeLong(mReleaseDate);
         dest.writeString(mCoverPath);
         dest.writeString(mTitle);
         dest.writeString(mBackdrop);
         dest.writeFloat(mPopularity);
         dest.writeString(mOverview);
+    }
+
+    public long getId() {
+        return mId;
+    }
+
+    public void setId(long id) {
+        mId = id;
     }
 
     public long getReleaseDate() {
@@ -105,5 +119,28 @@ public class Movie implements Parcelable {
 
     public void setOverview(String overview) {
         mOverview = overview;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Movie movie = (Movie) o;
+
+        return mId == movie.mId;
+    }
+
+    @Override
+    public int hashCode() {
+        return ((Long) mId).hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + mId +
+                ", title=" + mTitle +
+                '}';
     }
 }
