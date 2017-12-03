@@ -26,11 +26,13 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private Context mContext;
     private List<Item> mItems;
     private int mSecondHeaderPosition;
+    private boolean hasSections;
     private MainFragment.OnMovieClickListener mMovieClickListener;
 
     public MoviesRecyclerAdapter(Context context, List<Movie> theatreMovies, List<Movie> newMovies, MainFragment.OnMovieClickListener listener) {
         mContext = context;
         mMovieClickListener = listener;
+        hasSections = true;
         mSecondHeaderPosition = theatreMovies.size() + 1;
         mItems = new ArrayList<>();
         mItems.add(new Item(TYPE_HEADER, null, "In Theaters"));
@@ -39,6 +41,16 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         mItems.add(new Item(TYPE_HEADER, null, "New Movies"));
         for (Movie m : newMovies) {
+            mItems.add(new Item(TYPE_MOVIE, m, null));
+        }
+    }
+
+    public MoviesRecyclerAdapter(Context context, List<Movie> movies, MainFragment.OnMovieClickListener listener) {
+        mContext = context;
+        hasSections = false;
+        mMovieClickListener = listener;
+        mItems = new ArrayList<>();
+        for (Movie m : movies) {
             mItems.add(new Item(TYPE_MOVIE, m, null));
         }
     }
@@ -103,6 +115,9 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemViewType(int position) {
+        if (! hasSections) {
+            return TYPE_MOVIE;
+        }
         return position == 0 || position == mSecondHeaderPosition ? TYPE_HEADER : TYPE_MOVIE;
     }
 

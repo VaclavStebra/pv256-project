@@ -99,6 +99,7 @@ public class MoviesManager {
         movie.setBackdrop(cursor.getString(COL_BACKDROP));
         movie.setPopularity(cursor.getLong(COL_POPULARITY));
         movie.setOverview(cursor.getString(COL_OVERVIEW));
+        movie.setFavorite(true);
         return movie;
     }
 }

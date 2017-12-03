@@ -11,23 +11,36 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
+import java.util.List;
+
+import cz.muni.fi.pv256.movio2.uco_422186.data.MoviesManager;
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
 import cz.muni.fi.pv256.movio2.uco_422186.services.FetchMoviesIntentService;
 
-public class MainActivity extends AppCompatActivity implements MainFragment.OnMovieSelectListener {
+public class MainActivity extends AppCompatActivity implements MainFragment.OnMovieSelectListener, MainFragment.OnFavoriteSelectionChanged {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    public static final String SHOW_FAVORITES = "SHOW_FAVORITES";
 
     private ResponseReceiver mReceiver;
 
     private boolean mTwoPane;
+    private boolean mShowFavorites = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (savedInstanceState != null) {
+            mShowFavorites = savedInstanceState.getBoolean(SHOW_FAVORITES);
+        }
+
         setContentView(R.layout.activity_main);
-        fetchMovies();
+        if (!mShowFavorites) {
+            fetchMovies();
+        } else {
+            fetchFavoriteMovies();
+        }
 
         if (findViewById(R.id.movie_detail_container) != null) {
             mTwoPane = true;
@@ -46,6 +59,25 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
         filter.addCategory(Intent.CATEGORY_DEFAULT);
         mReceiver = new ResponseReceiver();
         registerReceiver(mReceiver, filter);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(SHOW_FAVORITES, mShowFavorites);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
+
+    private void fetchFavoriteMovies() {
+        MainFragment mainFragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_main);
+        if (mainFragment != null) {
+            mainFragment.showFavoriteMovies();
+        }
     }
 
     public void fetchMovies() {
@@ -91,6 +123,16 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
         MainFragment mainFragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_main);
         if (mainFragment != null) {
             mainFragment.moviesUpdated();
+        }
+    }
+
+    @Override
+    public void onFavoriteSelectionChanged(boolean showFavorites) {
+        mShowFavorites = showFavorites;
+        if (!mShowFavorites) {
+            fetchMovies();
+        } else {
+            fetchFavoriteMovies();
         }
     }
 
