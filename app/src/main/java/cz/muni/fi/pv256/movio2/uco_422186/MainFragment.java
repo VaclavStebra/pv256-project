@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +26,7 @@ import cz.muni.fi.pv256.movio2.uco_422186.data.Movies;
 import cz.muni.fi.pv256.movio2.uco_422186.data.MoviesManager;
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Movie>> {
 
     private static final String TAG = MainFragment.class.getSimpleName();
     private Context mContext;
@@ -33,8 +36,6 @@ public class MainFragment extends Fragment {
     private TextView mEmptyTheatreMoviesView;
     private boolean mShowFavorites = false;
     private Menu mOptionsMenu;
-
-    private MoviesManager mMoviesManager;
 
     public static final String SHOW_FAVORITES = "SHOW_FAVORITES";
 
@@ -68,7 +69,7 @@ public class MainFragment extends Fragment {
 
         mContext = getActivity().getApplicationContext();
         setHasOptionsMenu(true);
-        mMoviesManager = new MoviesManager(getContext());
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -136,11 +137,7 @@ public class MainFragment extends Fragment {
     }
 
     public void showFavoriteMovies() {
-        OnMovieClickListener clickListener = new OnMovieClickListener();
-        List<Movie> movies = mMoviesManager.getMovies();
-        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(mContext, movies, clickListener);
-        mTheatreMoviesRecyclerView.swapAdapter(adapter, false);
-        swapViews(movies.size() != 0);
+        getLoaderManager().restartLoader(0, null, this).forceLoad();
     }
 
     @Override
@@ -171,6 +168,24 @@ public class MainFragment extends Fragment {
         super.onPrepareOptionsMenu(menu);
     }
 
+    @Override
+    public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
+        return new FetchMovies(getContext());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
+        OnMovieClickListener clickListener = new OnMovieClickListener();
+        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(mContext, data, clickListener);
+        mTheatreMoviesRecyclerView.swapAdapter(adapter, false);
+        swapViews(data.size() != 0);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Movie>> loader) {
+
+    }
+
     public interface OnMovieSelectListener {
         void onMovieSelect(Movie movie);
     }
@@ -184,6 +199,23 @@ public class MainFragment extends Fragment {
         public void onClick(View view) {
             Movie movie = (Movie) view.getTag();
             mListener.onMovieSelect(movie);
+        }
+    }
+
+    private static class FetchMovies extends AsyncTaskLoader<List<Movie>> {
+
+        private Context mContext;
+
+        public FetchMovies(@NonNull Context context) {
+            super(context);
+            mContext = context;
+        }
+
+        @Nullable
+        @Override
+        public List<Movie> loadInBackground() {
+            MoviesManager moviesManager = new MoviesManager(mContext);
+            return moviesManager.getMovies();
         }
     }
 }

@@ -11,9 +11,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-import java.util.List;
-
-import cz.muni.fi.pv256.movio2.uco_422186.data.MoviesManager;
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
 import cz.muni.fi.pv256.movio2.uco_422186.services.FetchMoviesIntentService;
 
