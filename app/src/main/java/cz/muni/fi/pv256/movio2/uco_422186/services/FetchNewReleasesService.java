@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import cz.muni.fi.pv256.movio2.uco_422186.MainActivity;
 import cz.muni.fi.pv256.movio2.uco_422186.R;
-import cz.muni.fi.pv256.movio2.uco_422186.data.MoviesManager;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.local.MoviesManager;
 import cz.muni.fi.pv256.movio2.uco_422186.dto.APIResult;
 import cz.muni.fi.pv256.movio2.uco_422186.dto.MovieDTO;
 import cz.muni.fi.pv256.movio2.uco_422186.helpers.DtoMapper;

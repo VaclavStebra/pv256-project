@@ -27,7 +27,7 @@
 
         <provider
             android:authorities="@string/content_authority"
-            android:name=".data.MoviesProvider"
+            android:name=".data.source.local.MoviesProvider"
             android:exported="false" />
     </application>
 

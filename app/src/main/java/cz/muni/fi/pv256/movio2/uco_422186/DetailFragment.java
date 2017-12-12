@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movies;
-import cz.muni.fi.pv256.movio2.uco_422186.data.MoviesManager;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.local.MoviesManager;
 import cz.muni.fi.pv256.movio2.uco_422186.helpers.TimeHelpers;
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
 

@@ -1,4 +1,4 @@
-package cz.muni.fi.pv256.movio2.uco_422186.data;
+package cz.muni.fi.pv256.movio2.uco_422186.data.source.local;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.local.MoviesContract;
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
 
 public class MoviesManager {
