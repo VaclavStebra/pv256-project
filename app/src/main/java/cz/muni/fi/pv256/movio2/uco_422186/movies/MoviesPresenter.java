@@ -1,6 +1,6 @@
 package cz.muni.fi.pv256.movio2.uco_422186.movies;
 
-import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
+import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
 
 public class MoviesPresenter implements TasksContract.Presenter {
 

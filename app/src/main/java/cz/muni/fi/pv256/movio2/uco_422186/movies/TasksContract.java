@@ -2,7 +2,7 @@ package cz.muni.fi.pv256.movio2.uco_422186.movies;
 
 import java.util.List;
 
-import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
+import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
 
 public interface TasksContract {
 

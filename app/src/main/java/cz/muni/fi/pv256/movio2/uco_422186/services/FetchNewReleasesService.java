@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import cz.muni.fi.pv256.movio2.uco_422186.MainActivity;
 import cz.muni.fi.pv256.movio2.uco_422186.dto.APIResult;
 import cz.muni.fi.pv256.movio2.uco_422186.helpers.TimeHelpers;
-import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
+import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

@@ -14,7 +14,7 @@ import cz.muni.fi.pv256.movio2.uco_422186.data.source.local.MoviesManager;
 import cz.muni.fi.pv256.movio2.uco_422186.dto.APIResult;
 import cz.muni.fi.pv256.movio2.uco_422186.dto.MovieDTO;
 import cz.muni.fi.pv256.movio2.uco_422186.helpers.DtoMapper;
-import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
+import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
