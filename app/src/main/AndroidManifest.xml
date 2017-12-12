@@ -22,7 +22,9 @@
 
         <activity android:name=".MovieDetailActivity" />
 
-        <service android:name=".services.FetchMoviesIntentService" />
+        <service android:name=".services.FetchNewReleasesIntentService" />
+        <service android:name=".services.FetchTheatreMoviesIntentService" />
+
         <provider
             android:authorities="@string/content_authority"
             android:name=".data.MoviesProvider"

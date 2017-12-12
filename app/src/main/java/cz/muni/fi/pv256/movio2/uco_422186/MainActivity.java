@@ -11,8 +11,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
+import cz.muni.fi.pv256.movio2.uco_422186.data.Movies;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.MoviesRepository;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.remote.MoviesRemoteDataSource;
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
-import cz.muni.fi.pv256.movio2.uco_422186.services.FetchMoviesIntentService;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.OnMovieSelectListener, MainFragment.OnFavoriteSelectionChanged {
 
@@ -91,13 +95,9 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, n);
 
-        Intent fetchTheatreMoviesIntent = new Intent(this, FetchMoviesIntentService.class);
-        fetchTheatreMoviesIntent.putExtra(FetchMoviesIntentService.MOVIES_CATEGORY, FetchMoviesIntentService.THEATRE_MOVIES);
-        startService(fetchTheatreMoviesIntent);
-
-        Intent fetchNewMoviesIntent = new Intent(this, FetchMoviesIntentService.class);
-        fetchNewMoviesIntent.putExtra(FetchMoviesIntentService.MOVIES_CATEGORY, FetchMoviesIntentService.NEW_MOVIES);
-        startService(fetchNewMoviesIntent);
+        MoviesRepository moviesRepository = MoviesRepository.getInstance(MoviesRemoteDataSource.getInstance(getApplicationContext()));
+        moviesRepository.getNewReleases();
+        moviesRepository.getTheatreMovies();
     }
 
     @Override
@@ -137,8 +137,20 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
         public static final String ACTION_RESPONSE =
                 "cz.muni.fi.pv256.movio2.uco_422186.ACTION_RESPONSE";
 
+        public static final String NEW_RELEASES = "NEW_RELEASES";
+        public static final String THEATRE_MOVIES = "THEATRE_MOVIES";
+
         @Override
         public void onReceive(Context context, Intent intent) {
+            ArrayList<Movie> newReleases = intent.getParcelableArrayListExtra(NEW_RELEASES);
+            if (newReleases != null) {
+                Movies.newMovies = newReleases;
+            }
+            ArrayList<Movie> theaterMovies = intent.getParcelableArrayListExtra(THEATRE_MOVIES);
+            if (theaterMovies != null) {
+                Movies.theaterMovies = theaterMovies;
+            }
+
             updateMoviesView();
 
             Intent appIntent = new Intent(MainActivity.this, MainActivity.class);
