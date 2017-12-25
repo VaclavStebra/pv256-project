@@ -21,6 +21,7 @@ import cz.muni.fi.pv256.movio2.uco_422186.data.source.MoviesRepositoryImpl;
 import cz.muni.fi.pv256.movio2.uco_422186.data.source.local.MoviesManager;
 import cz.muni.fi.pv256.movio2.uco_422186.data.source.remote.MoviesRemoteDataSource;
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
+import cz.muni.fi.pv256.movio2.uco_422186.data.sync.UpdaterSyncAdapter;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.OnMovieSelectListener,
         MainFragment.OnFavoriteSelectionChanged,
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        UpdaterSyncAdapter.initializeSyncAdapter(this);
 
         if (savedInstanceState != null) {
             mShowFavorites = savedInstanceState.getBoolean(SHOW_FAVORITES);

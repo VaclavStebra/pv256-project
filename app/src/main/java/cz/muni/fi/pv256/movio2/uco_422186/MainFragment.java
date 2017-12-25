@@ -28,6 +28,7 @@ import cz.muni.fi.pv256.movio2.uco_422186.data.source.MoviesRepositoryImpl;
 import cz.muni.fi.pv256.movio2.uco_422186.data.source.local.MoviesManager;
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
 import cz.muni.fi.pv256.movio2.uco_422186.data.source.remote.MoviesRemoteDataSource;
+import cz.muni.fi.pv256.movio2.uco_422186.data.sync.UpdaterSyncAdapter;
 
 public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Movie>> {
 
@@ -157,6 +158,9 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
                 mShowFavorites = !item.isChecked();
                 item.setChecked(mShowFavorites);
                 mFavoriteSelectionListener.onFavoriteSelectionChanged(mShowFavorites);
+                return true;
+            case R.id.sync_btn:
+                UpdaterSyncAdapter.syncImmediately(getActivity().getApplicationContext());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
