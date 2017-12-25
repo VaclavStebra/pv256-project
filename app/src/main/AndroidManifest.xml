@@ -29,7 +29,8 @@
 
         <service android:name=".services.FetchNewReleasesIntentService" />
         <service android:name=".services.FetchTheatreMoviesIntentService" />
-        
+        <service android:name=".services.FetchMovieIntentService" />
+
         <service android:name=".data.sync.UpdaterAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />

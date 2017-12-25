@@ -73,7 +73,7 @@ public class DetailFragment extends Fragment {
 
         movieTitle.setText(mMovie.getTitle());
         movieRelease.setText(TimeHelpers.formatDateForDetailView(mMovie.getReleaseDate()));
-        moviePopularity.setText(String.format("%.1f", mMovie.getPopularity()) + " / 5");
+        moviePopularity.setText(String.format("%.1f", mMovie.getPopularity()));
         movieOverview.setText(mMovie.getOverview());
 
         RequestOptions options = new RequestOptions();

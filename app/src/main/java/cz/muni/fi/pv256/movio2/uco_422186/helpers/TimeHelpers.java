@@ -2,6 +2,7 @@ package cz.muni.fi.pv256.movio2.uco_422186.helpers;
 
 import android.annotation.SuppressLint;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,5 +41,17 @@ public class TimeHelpers {
 
     public static String formatDateForDetailView(long time) {
         return new SimpleDateFormat("yyyy-MM-dd").format(new Date(time));
+    }
+
+    public static long getReleaseDate(String date) {
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+1:00"));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            cal.setTime(sdf.parse(date));
+            return cal.getTimeInMillis();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return getCurrentTime().getTime();
+        }
     }
 }

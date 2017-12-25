@@ -37,12 +37,17 @@ public class MoviesRepositoryImpl implements MoviesRepository {
     }
 
     @Override
+    public void getMovieDetails(Movie movie) {
+        mMoviesRemoteDataSource.getMovie(movie);
+    }
+
+    @Override
     public List<Movie> getFavoriteMovies() {
         return mMoviesManager.getMovies();
     }
 
     @Override
-    public Movie getMovie(Movie movie) {
+    public Movie getFavoriteMovie(Movie movie) {
         return mMoviesManager.getMovie(movie);
     }
 
@@ -54,5 +59,10 @@ public class MoviesRepositoryImpl implements MoviesRepository {
     @Override
     public void removeFavoriteMovie(Movie movie) {
         mMoviesManager.deleteMovie(movie);
+    }
+
+    @Override
+    public void updateFavoriteMovie(Movie movie) {
+        mMoviesManager.updateMovie(movie);
     }
 }

@@ -14,6 +14,11 @@ public interface MoviesDataSource {
         void onNewReleasesLoaded(List<Movie> movies);
     }
 
+    interface GetMovieCallback {
+        void onMovieUpdated(Movie movie);
+    }
+
     void getTheatreMovies();
     void getNewReleases();
+    void getMovie(Movie movie);
 }

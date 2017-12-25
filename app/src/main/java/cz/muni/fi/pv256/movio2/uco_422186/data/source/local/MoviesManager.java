@@ -78,6 +78,14 @@ public class MoviesManager {
         return null;
     }
 
+    public void updateMovie(Movie movie) {
+        if (movie == null) {
+            throw new NullPointerException();
+        }
+
+        mContext.getContentResolver().update(MoviesContract.MovieEntry.CONTENT_URI, prepareMovieValues(movie), WHERE_ID, new String[] {String.valueOf(movie.getId())});
+    }
+
     private ContentValues prepareMovieValues(Movie movie) {
         ContentValues values = new ContentValues();
         values.put(MoviesContract.MovieEntry._ID, movie.getId());
@@ -97,7 +105,7 @@ public class MoviesManager {
         movie.setCoverPath(cursor.getString(COL_COVER_PATH));
         movie.setTitle(cursor.getString(COL_TITLE));
         movie.setBackdrop(cursor.getString(COL_BACKDROP));
-        movie.setPopularity(cursor.getLong(COL_POPULARITY));
+        movie.setPopularity(cursor.getFloat(COL_POPULARITY));
         movie.setOverview(cursor.getString(COL_OVERVIEW));
         movie.setFavorite(true);
         return movie;

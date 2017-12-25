@@ -46,7 +46,7 @@ public class FetchService {
         ArrayList<Movie> movies = new ArrayList<>();
         for (MovieDTO movieDTO : result.movies) {
             Movie movie = DtoMapper.mapDTOToMovie(movieDTO);
-            Movie dbMovie = mMoviesRepository.getMovie(movie);
+            Movie dbMovie = mMoviesRepository.getFavoriteMovie(movie);
             movie.setFavorite(dbMovie != null);
             movies.add(movie);
         }
@@ -73,6 +73,14 @@ public class FetchService {
         broadcastIntent.setAction(MainActivity.ResponseReceiver.ACTION_RESPONSE);
         broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
         broadcastIntent.putParcelableArrayListExtra(key, movies);
+        mContext.sendBroadcast(broadcastIntent);
+    }
+
+    protected void notifyActivityOnMovieUpdate(Movie movie) {
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction(MainActivity.ResponseReceiver.ACTION_RESPONSE);
+        broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+        broadcastIntent.putExtra(MainActivity.ResponseReceiver.MOVIE, movie);
         mContext.sendBroadcast(broadcastIntent);
     }
 }
