@@ -23,8 +23,11 @@ import android.widget.TextView;
 import java.util.List;
 
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movies;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.MoviesRepository;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.MoviesRepositoryImpl;
 import cz.muni.fi.pv256.movio2.uco_422186.data.source.local.MoviesManager;
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.remote.MoviesRemoteDataSource;
 
 public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Movie>> {
 
@@ -68,6 +71,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         }
 
         mContext = getActivity().getApplicationContext();
+
         setHasOptionsMenu(true);
         getLoaderManager().initLoader(0, null, this);
     }
@@ -214,8 +218,9 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         @Nullable
         @Override
         public List<Movie> loadInBackground() {
-            MoviesManager moviesManager = new MoviesManager(mContext);
-            return moviesManager.getMovies();
+            MoviesRepository moviesRepository = MoviesRepositoryImpl.getInstance(MoviesRemoteDataSource.getInstance(mContext),
+                    new MoviesManager(mContext));
+            return moviesRepository.getFavoriteMovies();
         }
     }
 }

@@ -10,7 +10,10 @@ import java.util.ArrayList;
 
 import cz.muni.fi.pv256.movio2.uco_422186.MainActivity;
 import cz.muni.fi.pv256.movio2.uco_422186.R;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.MoviesRepository;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.MoviesRepositoryImpl;
 import cz.muni.fi.pv256.movio2.uco_422186.data.source.local.MoviesManager;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.remote.MoviesRemoteDataSource;
 import cz.muni.fi.pv256.movio2.uco_422186.dto.APIResult;
 import cz.muni.fi.pv256.movio2.uco_422186.dto.MovieDTO;
 import cz.muni.fi.pv256.movio2.uco_422186.helpers.DtoMapper;
@@ -22,9 +25,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class FetchService {
 
     protected Context mContext;
+    private final MoviesRepository mMoviesRepository;
 
     public FetchService(Context context) {
         mContext = context;
+        mMoviesRepository = MoviesRepositoryImpl.getInstance(MoviesRemoteDataSource.getInstance(mContext),
+                new MoviesManager(mContext));
     }
 
     protected MovioDbService buildService() {
@@ -40,8 +46,7 @@ public class FetchService {
         ArrayList<Movie> movies = new ArrayList<>();
         for (MovieDTO movieDTO : result.movies) {
             Movie movie = DtoMapper.mapDTOToMovie(movieDTO);
-            MoviesManager moviesManager = new MoviesManager(mContext);
-            Movie dbMovie = moviesManager.getMovie(movie);
+            Movie dbMovie = mMoviesRepository.getMovie(movie);
             movie.setFavorite(dbMovie != null);
             movies.add(movie);
         }

@@ -1,31 +1,14 @@
 package cz.muni.fi.pv256.movio2.uco_422186.data.source;
 
-import android.support.annotation.NonNull;
+import java.util.List;
 
-public class MoviesRepository implements MoviesDataSource {
+import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
 
-    private static MoviesRepository INSTANCE = null;
-
-    private final MoviesDataSource mMoviesRemoteDataSource;
-
-    public static MoviesRepository getInstance(@NonNull MoviesDataSource moviesRemoteDataSource) {
-        if (INSTANCE == null) {
-            INSTANCE = new MoviesRepository(moviesRemoteDataSource);
-        }
-        return INSTANCE;
-    }
-
-    private MoviesRepository(@NonNull MoviesDataSource moviesRemoteDataSource) {
-        mMoviesRemoteDataSource = moviesRemoteDataSource;
-    }
-
-    @Override
-    public void getTheatreMovies() {
-        mMoviesRemoteDataSource.getTheatreMovies();
-    }
-
-    @Override
-    public void getNewReleases() {
-        mMoviesRemoteDataSource.getNewReleases();
-    }
+public interface MoviesRepository {
+    void getTheatreMovies();
+    void getNewReleases();
+    List<Movie> getFavoriteMovies();
+    Movie getMovie(Movie movie);
+    void addFavoriteMovie(Movie movie);
+    void removeFavoriteMovie(Movie movie);
 }

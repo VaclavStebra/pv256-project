@@ -12,13 +12,21 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movies;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.MoviesDataSource;
 import cz.muni.fi.pv256.movio2.uco_422186.data.source.MoviesRepository;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.MoviesRepositoryImpl;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.local.MoviesManager;
 import cz.muni.fi.pv256.movio2.uco_422186.data.source.remote.MoviesRemoteDataSource;
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
 
-public class MainActivity extends AppCompatActivity implements MainFragment.OnMovieSelectListener, MainFragment.OnFavoriteSelectionChanged {
+public class MainActivity extends AppCompatActivity implements MainFragment.OnMovieSelectListener,
+        MainFragment.OnFavoriteSelectionChanged,
+        MoviesDataSource.GetTheatreMoviesCallback,
+        MoviesDataSource.GetNewReleasesCallback
+{
 
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String SHOW_FAVORITES = "SHOW_FAVORITES";
@@ -95,7 +103,9 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, n);
 
-        MoviesRepository moviesRepository = MoviesRepository.getInstance(MoviesRemoteDataSource.getInstance(getApplicationContext()));
+        Context applicationContext = getApplicationContext();
+        MoviesRepository moviesRepository = MoviesRepositoryImpl.getInstance(MoviesRemoteDataSource.getInstance(applicationContext),
+                new MoviesManager(applicationContext));
         moviesRepository.getNewReleases();
         moviesRepository.getTheatreMovies();
     }
@@ -133,6 +143,38 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
         }
     }
 
+    @Override
+    public void onTheatreMoviesLoaded(List<Movie> movies) {
+        Movies.theaterMovies = movies;
+        onMoviesLoaded();
+    }
+
+    @Override
+    public void onNewReleasesLoaded(List<Movie> movies) {
+        Movies.newMovies = movies;
+        onMoviesLoaded();
+    }
+
+    private void onMoviesLoaded() {
+        updateMoviesView();
+        showMoviesLoadedNotification();
+    }
+
+    private void showMoviesLoadedNotification() {
+        Intent appIntent = new Intent(MainActivity.this, MainActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, 0, appIntent, 0);
+
+        Notification n = new Notification.Builder(MainActivity.this)
+                .setContentTitle("Movie list fetched")
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentIntent(pIntent)
+                .setAutoCancel(true)
+                .build();
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(0, n);
+    }
+
     public class ResponseReceiver extends BroadcastReceiver {
         public static final String ACTION_RESPONSE =
                 "cz.muni.fi.pv256.movio2.uco_422186.ACTION_RESPONSE";
@@ -144,27 +186,12 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
         public void onReceive(Context context, Intent intent) {
             ArrayList<Movie> newReleases = intent.getParcelableArrayListExtra(NEW_RELEASES);
             if (newReleases != null) {
-                Movies.newMovies = newReleases;
+                onNewReleasesLoaded(newReleases);
             }
             ArrayList<Movie> theaterMovies = intent.getParcelableArrayListExtra(THEATRE_MOVIES);
             if (theaterMovies != null) {
-                Movies.theaterMovies = theaterMovies;
+                onTheatreMoviesLoaded(theaterMovies);
             }
-
-            updateMoviesView();
-
-            Intent appIntent = new Intent(MainActivity.this, MainActivity.class);
-            PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, 0, appIntent, 0);
-
-            Notification n = new Notification.Builder(MainActivity.this)
-                    .setContentTitle("Movie list fetched")
-                    .setSmallIcon(R.mipmap.ic_launcher_round)
-                    .setContentIntent(pIntent)
-                    .setAutoCancel(true)
-                    .build();
-
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.notify(0, n);
         }
     }
 }
