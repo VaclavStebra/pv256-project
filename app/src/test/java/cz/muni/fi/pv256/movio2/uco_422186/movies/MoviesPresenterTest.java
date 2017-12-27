@@ -8,13 +8,14 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import cz.muni.fi.pv256.movio2.uco_422186.Injection;
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
 
 import static org.mockito.Mockito.verify;
 
 public class MoviesPresenterTest {
     @Mock
-    private TasksContract.View mMoviesView;
+    private MoviesContract.View mMoviesView;
 
     private MoviesPresenter mMoviesPresenter;
 
@@ -22,7 +23,7 @@ public class MoviesPresenterTest {
     public void setupMoviesPresenter() {
         MockitoAnnotations.initMocks(this);
 
-        mMoviesPresenter = new MoviesPresenter(mMoviesView);
+        mMoviesPresenter = new MoviesPresenter(Injection.provideMoviesRepository(mFragmentActivity.getApplicationContext()), mMoviesView);
         DateTimeZone.setProvider(new UTCProvider());
     }
 
