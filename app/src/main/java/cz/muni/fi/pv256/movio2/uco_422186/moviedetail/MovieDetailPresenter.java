@@ -17,7 +17,14 @@ public class MovieDetailPresenter implements MovieDetailContract.Presenter {
 
     @Override
     public void showMovie() {
-        mMovieDetailView.showMovie(mMovie);
+        if (mMovie != null) {
+            mMovieDetailView.showMovie(mMovie);
+        }
+    }
+
+    @Override
+    public void showNoMovieSelected() {
+        mMovieDetailView.showNoMovieSelected();
     }
 
     @Override
@@ -42,5 +49,13 @@ public class MovieDetailPresenter implements MovieDetailContract.Presenter {
         if (newMoviesIndex != -1) {
             Movies.newMovies.set(newMoviesIndex, mMovie);
         }
+    }
+
+    public Movie getMovie() {
+        return mMovie;
+    }
+
+    public void setMovie(Movie movie) {
+        mMovie = movie;
     }
 }

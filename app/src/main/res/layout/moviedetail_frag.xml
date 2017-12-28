@@ -12,7 +12,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/movie_detail_layout"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/movie_image"
@@ -68,7 +70,7 @@
         android:src="@drawable/ic_add_white_24dp"
         app:layout_anchor="@id/movie_image"
         app:backgroundTint="@color/secondary_accent"
-
+        android:visibility="gone"
         app:layout_anchorGravity="bottom|right|end"/>
 
     <android.support.design.widget.FloatingActionButton
@@ -81,8 +83,15 @@
         android:src="@drawable/ic_remove_white_24dp"
         app:layout_anchor="@id/movie_image"
         app:backgroundTint="@color/secondary_accent"
-
+        android:visibility="gone"
         app:layout_anchorGravity="bottom|right|end"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_movie_selected"
+        android:id="@+id/empty_view"
+        android:padding="8dp"
+        android:textSize="16sp"/>
 
 </android.support.design.widget.CoordinatorLayout>

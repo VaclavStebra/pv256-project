@@ -7,10 +7,12 @@ public interface MovieDetailContract {
     interface View extends BaseView<Presenter> {
         void showMovie(Movie movie);
         void toggleMovieFavorite(boolean isFavorite);
+        void showNoMovieSelected();
     }
 
     interface Presenter {
         void showMovie();
+        void showNoMovieSelected();
         void toggleFavoriteMovie();
     }
 }

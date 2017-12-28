@@ -48,6 +48,7 @@ public class MoviesMvpController {
 
         MovieDetailFragment movieDetailFragment = findOrCreateMovieDetailFragmentForTablet();
         MovieDetailPresenter movieDetailPresenter = createMovieDetailPresenter(movieDetailFragment);
+        movieDetailPresenter.setMovie(mMovie);
 
         mMoviesTabletPresenter = new MoviesTabletPresenter(
                 Injection.provideMoviesRepository(mFragmentActivity.getApplicationContext()),
@@ -108,7 +109,7 @@ public class MoviesMvpController {
     }
 
     public Movie getMovie() {
-        return mMovie;
+        return mMoviesTabletPresenter.getMovieDetailPresenter().getMovie();
     }
 
     private FragmentManager getSupportFragmentManager() {

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -32,6 +33,8 @@ public class MovieDetailFragment extends Fragment implements MovieDetailContract
     private ImageView mMovieImage;
     private FloatingActionButton mFab;
     private FloatingActionButton mFabRemove;
+    private TextView mEmptyView;
+    private LinearLayout mMovieDetailLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +66,8 @@ public class MovieDetailFragment extends Fragment implements MovieDetailContract
         mMovieImage = view.findViewById(R.id.movie_image);
         mFab = view.findViewById(R.id.fab);
         mFabRemove = view.findViewById(R.id.fab_remove);
+        mEmptyView = view.findViewById(R.id.empty_view);
+        mMovieDetailLayout = view.findViewById(R.id.movie_detail_layout);
 
         View.OnClickListener favoriteToggleListener = new View.OnClickListener() {
             @Override
@@ -88,6 +93,9 @@ public class MovieDetailFragment extends Fragment implements MovieDetailContract
 
     @Override
     public void showMovie(Movie movie) {
+        mMovieDetailLayout.setVisibility(View.VISIBLE);
+        mEmptyView.setVisibility(View.GONE);
+        mEmptyView.setVisibility(View.GONE);
         toggleMovieFavorite(movie.isFavorite());
 
         mMovieTitle.setText(movie.getTitle());
@@ -115,5 +123,13 @@ public class MovieDetailFragment extends Fragment implements MovieDetailContract
             mFab.setVisibility(View.VISIBLE);
             mFabRemove.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void showNoMovieSelected() {
+        mFabRemove.setVisibility(View.GONE);
+        mFab.setVisibility(View.GONE);
+        mMovieDetailLayout.setVisibility(View.GONE);
+        mEmptyView.setVisibility(View.VISIBLE);
     }
 }
