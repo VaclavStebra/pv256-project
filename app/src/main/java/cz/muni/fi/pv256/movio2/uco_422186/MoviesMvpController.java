@@ -109,7 +109,11 @@ public class MoviesMvpController {
     }
 
     public Movie getMovie() {
-        return mMoviesTabletPresenter.getMovieDetailPresenter().getMovie();
+        if (mMoviesTabletPresenter != null) {
+            return mMoviesTabletPresenter.getMovieDetailPresenter().getMovie();
+        }
+
+        return mMovie;
     }
 
     private FragmentManager getSupportFragmentManager() {
