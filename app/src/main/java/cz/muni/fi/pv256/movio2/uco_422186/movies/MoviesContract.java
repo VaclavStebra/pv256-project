@@ -35,5 +35,7 @@ public interface MoviesContract {
         void setFiltering(MoviesFilterType filtering);
 
         MoviesFilterType getFiltering();
+
+        void favoriteMovieUpdated(Movie movie);
     }
 }

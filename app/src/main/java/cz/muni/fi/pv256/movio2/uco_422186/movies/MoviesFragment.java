@@ -25,6 +25,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.muni.fi.pv256.movio2.uco_422186.data.sync.UpdaterSyncAdapter;
 import cz.muni.fi.pv256.movio2.uco_422186.moviedetail.MovieDetailActivity;
 import cz.muni.fi.pv256.movio2.uco_422186.MoviesRecyclerAdapter;
 import cz.muni.fi.pv256.movio2.uco_422186.R;
@@ -38,7 +39,8 @@ import cz.muni.fi.pv256.movio2.uco_422186.data.source.remote.MoviesRemoteDataSou
 import cz.muni.fi.pv256.movio2.uco_422186.util.ActivityUtils;
 
 public class MoviesFragment extends Fragment implements MoviesContract.View,
-        LoaderManager.LoaderCallbacks<List<Movie>> {
+        LoaderManager.LoaderCallbacks<List<Movie>>,
+        MoviesDataSource.GetMovieCallback {
 
     private MoviesContract.Presenter mMoviesPresenter;
 
@@ -122,9 +124,9 @@ public class MoviesFragment extends Fragment implements MoviesContract.View,
                 item.setChecked(showFavorites());
                 mMoviesPresenter.loadMovies();
                 return true;
-            /*case R.id.sync_btn:
-                UpdaterSyncAdapter.syncImmediately(getActivity().getApplicationContext());
-                return true;*/
+            case R.id.sync_btn:
+                UpdaterSyncAdapter.syncImmediately(mContext);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -199,10 +201,19 @@ public class MoviesFragment extends Fragment implements MoviesContract.View,
     public void showMoviesFetchedNotification() {
         ActivityUtils.showNotification(mContext, "Movie list fetched");
     }
+    private void showMovieUpdatedNotification() {
+        ActivityUtils.showNotification(mContext, "Favorite movie updated");
+    }
 
     @Override
     public void loadFavoriteMovies() {
         getLoaderManager().restartLoader(0, null, this).forceLoad();
+    }
+
+    @Override
+    public void onMovieUpdated(Movie movie) {
+        showMovieUpdatedNotification();
+        mMoviesPresenter.favoriteMovieUpdated(movie);
     }
 
     public static MoviesFragment newInstance() {
@@ -241,10 +252,10 @@ public class MoviesFragment extends Fragment implements MoviesContract.View,
             if (theaterMovies != null) {
                 ((MoviesDataSource.GetTheatreMoviesCallback) mMoviesPresenter).onTheatreMoviesLoaded(theaterMovies);
             }
-            /*Movie updatedMovie = intent.getParcelableExtra(MOVIE);
+            Movie updatedMovie = intent.getParcelableExtra(MOVIE);
             if (updatedMovie != null) {
                 onMovieUpdated(updatedMovie);
-            }*/
+            }
         }
 
     }

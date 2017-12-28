@@ -63,6 +63,14 @@ public class MoviesPresenter implements MoviesContract.Presenter,
     }
 
     @Override
+    public void favoriteMovieUpdated(Movie movie) {
+        mMoviesRepository.updateFavoriteMovie(movie);
+        if (getFiltering() == MoviesFilterType.FAVORITE) {
+            loadFavoriteMovies();
+        }
+    }
+
+    @Override
     public void onTheatreMoviesLoaded(List<Movie> movies) {
         Movies.theaterMovies = movies;
         mMoviesView.showMoviesFetchedNotification();

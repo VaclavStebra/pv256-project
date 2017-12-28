@@ -45,6 +45,11 @@ public class MoviesTabletPresenter implements MoviesContract.Presenter, MovieDet
         return mMoviesPresenter.getFiltering();
     }
 
+    @Override
+    public void favoriteMovieUpdated(Movie movie) {
+        mMoviesPresenter.favoriteMovieUpdated(movie);
+    }
+
     public void setMovieDetailPresenter(MovieDetailPresenter movieDetailPresenter) {
         mMovieDetailPresenter = movieDetailPresenter;
     }

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import cz.muni.fi.pv256.movio2.uco_422186.MoviesMvpController;
 import cz.muni.fi.pv256.movio2.uco_422186.R;
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
+import cz.muni.fi.pv256.movio2.uco_422186.data.sync.UpdaterSyncAdapter;
 
 public class MoviesActivity extends AppCompatActivity {
     private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
@@ -17,6 +18,8 @@ public class MoviesActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movies_act);
+
+        UpdaterSyncAdapter.initializeSyncAdapter(this);
 
         Movie movie = null;
         MoviesFilterType currentFiltering = null;
