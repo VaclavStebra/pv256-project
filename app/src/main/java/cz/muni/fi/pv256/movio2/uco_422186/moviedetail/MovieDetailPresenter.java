@@ -19,6 +19,8 @@ public class MovieDetailPresenter implements MovieDetailContract.Presenter {
     public void showMovie() {
         if (mMovie != null) {
             mMovieDetailView.showMovie(mMovie);
+        } else {
+            mMovieDetailView.showNoMovieSelected();
         }
     }
 
