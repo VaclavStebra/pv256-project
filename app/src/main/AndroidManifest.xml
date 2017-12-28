@@ -16,13 +16,13 @@
         android:supportsRtl="true"
         android:theme="${theme}">
 
-        <activity android:name=".MovieDetailActivity" />
         <activity android:name=".movies.MoviesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".moviedetail.MovieDetailActivity" />
 
         <service android:name=".services.FetchNewReleasesIntentService" />
         <service android:name=".services.FetchTheatreMoviesIntentService" />

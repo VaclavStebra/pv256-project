@@ -25,6 +25,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.muni.fi.pv256.movio2.uco_422186.moviedetail.MovieDetailActivity;
 import cz.muni.fi.pv256.movio2.uco_422186.MoviesRecyclerAdapter;
 import cz.muni.fi.pv256.movio2.uco_422186.R;
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
@@ -43,9 +44,10 @@ public class MoviesFragment extends Fragment implements MoviesContract.View,
 
     private RecyclerView mTheatreMoviesRecyclerView;
     private TextView mEmptyTheatreMoviesView;
-
-    private ResponseReceiver mReceiver;
     private Menu mOptionsMenu;
+
+    private Context mContext;
+    private ResponseReceiver mReceiver;
 
     @Override
     public void onResume() {
@@ -62,6 +64,7 @@ public class MoviesFragment extends Fragment implements MoviesContract.View,
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = getActivity().getApplicationContext();
         setHasOptionsMenu(true);
         getLoaderManager().initLoader(0, null, this);
     }
@@ -70,6 +73,12 @@ public class MoviesFragment extends Fragment implements MoviesContract.View,
     public void onPause() {
         super.onPause();
         getActivity().unregisterReceiver(mReceiver);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mContext = null;
     }
 
     @Nullable
@@ -84,7 +93,7 @@ public class MoviesFragment extends Fragment implements MoviesContract.View,
 
         mTheatreMoviesRecyclerView.setHasFixedSize(true);
         mTheatreMoviesRecyclerView.setNestedScrollingEnabled(false);
-        mTheatreMoviesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        mTheatreMoviesRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mTheatreMoviesRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         return view;
@@ -123,7 +132,7 @@ public class MoviesFragment extends Fragment implements MoviesContract.View,
 
     @Override
     public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
-        return new FetchMovies(getContext());
+        return new FetchMovies(mContext);
     }
 
     @Override
@@ -153,7 +162,7 @@ public class MoviesFragment extends Fragment implements MoviesContract.View,
     public void showMovies(List<Movie> movies) {
         showMoviesView();
         OnMovieClickListener clickListener = new OnMovieClickListener();
-        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(getActivity().getApplicationContext(), movies, clickListener);
+        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(mContext, movies, clickListener);
         mTheatreMoviesRecyclerView.swapAdapter(adapter, false);
     }
 
@@ -170,7 +179,9 @@ public class MoviesFragment extends Fragment implements MoviesContract.View,
 
     @Override
     public void showMovieDetailsUi(Movie movie) {
-
+        Intent intent = new Intent(getContext(), MovieDetailActivity.class);
+        intent.putExtra(MovieDetailActivity.EXTRA_MOVIE, movie);
+        startActivity(intent);
     }
 
     @Override
@@ -181,12 +192,12 @@ public class MoviesFragment extends Fragment implements MoviesContract.View,
 
     @Override
     public void showFetchingMoviesNotification() {
-        ActivityUtils.showNotification(getActivity().getApplicationContext(), "Fetching movie list");
+        ActivityUtils.showNotification(mContext, "Fetching movie list");
     }
 
     @Override
     public void showMoviesFetchedNotification() {
-        ActivityUtils.showNotification(getActivity().getApplicationContext(), "Movie list fetched");
+        ActivityUtils.showNotification(mContext, "Movie list fetched");
     }
 
     @Override
@@ -200,7 +211,7 @@ public class MoviesFragment extends Fragment implements MoviesContract.View,
 
     private void swapAdapter() {
         MoviesFragment.OnMovieClickListener clickListener = new MoviesFragment.OnMovieClickListener();
-        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(getActivity().getApplicationContext(),
+        MoviesRecyclerAdapter adapter = new MoviesRecyclerAdapter(mContext,
                 Movies.theaterMovies, Movies.newMovies, clickListener);
         mTheatreMoviesRecyclerView.swapAdapter(adapter, false);
     }

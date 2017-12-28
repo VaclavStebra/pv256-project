@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
+import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
 import cz.muni.fi.pv256.movio2.uco_422186.moviedetail.MovieDetailFragment;
 import cz.muni.fi.pv256.movio2.uco_422186.moviedetail.MovieDetailPresenter;
 import cz.muni.fi.pv256.movio2.uco_422186.movies.MoviesActivity;
@@ -17,18 +18,18 @@ import static cz.muni.fi.pv256.movio2.uco_422186.util.ActivityUtils.isTablet;
 public class MoviesMvpController {
 
     private final FragmentActivity mFragmentActivity;
-    private final Long mMovieId;
+    private final Movie mMovie;
 
     private MoviesTabletPresenter mMoviesTabletPresenter;
     private MoviesPresenter mMoviesPresenter;
 
-    public MoviesMvpController(FragmentActivity fragmentActivity, Long movieId) {
+    public MoviesMvpController(FragmentActivity fragmentActivity, Movie movie) {
         mFragmentActivity = fragmentActivity;
-        mMovieId = movieId;
+        mMovie = movie;
     }
 
-    public static MoviesMvpController createMoviesView(MoviesActivity moviesActivity, Long movieId) {
-        MoviesMvpController moviesMvpController = new MoviesMvpController(moviesActivity, movieId);
+    public static MoviesMvpController createMoviesView(MoviesActivity moviesActivity, Movie movie) {
+        MoviesMvpController moviesMvpController = new MoviesMvpController(moviesActivity, movie);
         moviesMvpController.initMoviesView();
         return moviesMvpController;
     }
@@ -70,7 +71,7 @@ public class MoviesMvpController {
     }
 
     private MovieDetailPresenter createMovieDetailPresenter(MovieDetailFragment movieDetailFragment) {
-        return new MovieDetailPresenter(mMovieId,
+        return new MovieDetailPresenter(mMovie,
                 Injection.provideMoviesRepository(mFragmentActivity.getApplicationContext()),
                 movieDetailFragment);
     }
@@ -106,8 +107,8 @@ public class MoviesMvpController {
         return mMoviesPresenter.getFiltering();
     }
 
-    public Long getMovieId() {
-        return mMovieId;
+    public Movie getMovie() {
+        return mMovie;
     }
 
     private FragmentManager getSupportFragmentManager() {

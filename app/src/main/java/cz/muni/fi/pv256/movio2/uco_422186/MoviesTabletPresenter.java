@@ -48,4 +48,14 @@ public class MoviesTabletPresenter implements MoviesContract.Presenter, MovieDet
     public void setMovieDetailPresenter(MovieDetailPresenter movieDetailPresenter) {
         mMovieDetailPresenter = movieDetailPresenter;
     }
+
+    @Override
+    public void showMovie() {
+        mMovieDetailPresenter.showMovie();
+    }
+
+    @Override
+    public void toggleFavoriteMovie() {
+        mMovieDetailPresenter.toggleFavoriteMovie();
+    }
 }

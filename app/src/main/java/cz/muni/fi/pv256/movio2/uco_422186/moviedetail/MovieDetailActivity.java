@@ -6,18 +6,19 @@ import android.support.v7.app.AppCompatActivity;
 
 import cz.muni.fi.pv256.movio2.uco_422186.Injection;
 import cz.muni.fi.pv256.movio2.uco_422186.R;
+import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
 import cz.muni.fi.pv256.movio2.uco_422186.util.ActivityUtils;
 
 public class MovieDetailActivity extends AppCompatActivity {
-    public static final String EXTRA_TASK_ID = "EXTRA_TASK_ID";
+    public static final String EXTRA_MOVIE = "EXTRA_MOVIE";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.movies_act);
+        setContentView(R.layout.moviedetail_act);
 
-        long movieId = getIntent().getLongExtra(EXTRA_TASK_ID, 0);
+        Movie movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
 
         MovieDetailFragment movieDetailFragment = (MovieDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.contentFrame);
@@ -30,7 +31,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
 
         MovieDetailPresenter movieDetailPresenter = new MovieDetailPresenter(
-                movieId,
+                movie,
                 Injection.provideMoviesRepository(getApplicationContext()),
                 movieDetailFragment
         );

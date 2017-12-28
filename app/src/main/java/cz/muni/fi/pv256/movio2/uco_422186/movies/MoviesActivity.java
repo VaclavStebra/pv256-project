@@ -6,10 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import cz.muni.fi.pv256.movio2.uco_422186.MoviesMvpController;
 import cz.muni.fi.pv256.movio2.uco_422186.R;
+import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
 
 public class MoviesActivity extends AppCompatActivity {
     private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
-    private static final String CURRENT_MOVIE_ID_KEY = "CURRENT_MOVIE_ID_KEY";
+    private static final String CURRENT_MOVIE_KEY = "CURRENT_MOVIE_KEY";
     private MoviesMvpController mMoviesMvpTabletController;
 
     @Override
@@ -17,14 +18,14 @@ public class MoviesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movies_act);
 
-        Long movieId = null;
+        Movie movie = null;
         MoviesFilterType currentFiltering = null;
         if (savedInstanceState != null) {
             currentFiltering = (MoviesFilterType) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
-            movieId = savedInstanceState.getLong(CURRENT_MOVIE_ID_KEY);
+            movie = savedInstanceState.getParcelable(CURRENT_MOVIE_KEY);
         }
 
-        mMoviesMvpTabletController = MoviesMvpController.createMoviesView(this, movieId);
+        mMoviesMvpTabletController = MoviesMvpController.createMoviesView(this, movie);
         if (currentFiltering != null) {
             mMoviesMvpTabletController.setFiltering(currentFiltering);
         }
@@ -33,8 +34,8 @@ public class MoviesActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(CURRENT_FILTERING_KEY, mMoviesMvpTabletController.getFiltering());
-        if (mMoviesMvpTabletController.getMovieId() != null) {
-            outState.putLong(CURRENT_MOVIE_ID_KEY, mMoviesMvpTabletController.getMovieId());
+        if (mMoviesMvpTabletController.getMovie() != null) {
+            outState.putParcelable(CURRENT_MOVIE_KEY, mMoviesMvpTabletController.getMovie());
         }
         super.onSaveInstanceState(outState);
     }

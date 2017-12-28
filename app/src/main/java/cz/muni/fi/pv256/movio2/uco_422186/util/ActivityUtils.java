@@ -1,5 +1,6 @@
 package cz.muni.fi.pv256.movio2.uco_422186.util;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,9 +11,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import cz.muni.fi.pv256.movio2.uco_422186.MainActivity;
-import cz.muni.fi.pv256.movio2.uco_422186.MovieDetailActivity;
 import cz.muni.fi.pv256.movio2.uco_422186.R;
+import cz.muni.fi.pv256.movio2.uco_422186.moviedetail.MovieDetailActivity;
 
 public class ActivityUtils {
     public static void addFragmentToActivity(@NonNull FragmentManager fragmentManager,
@@ -37,7 +37,7 @@ public class ActivityUtils {
                 .setAutoCancel(true)
                 .build();
 
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Activity.NOTIFICATION_SERVICE);
         notificationManager.notify(0, n);
     }
 }

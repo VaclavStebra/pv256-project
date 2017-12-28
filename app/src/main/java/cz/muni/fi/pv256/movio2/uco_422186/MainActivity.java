@@ -55,18 +55,18 @@ public class MainActivity extends AppCompatActivity implements
             //fetchFavoriteMovies();
         }
 
-        if (findViewById(R.id.movie_detail_container) != null) {
-            mTwoPane = true;
-
-            if (savedInstanceState == null) {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.movie_detail_container, new DetailFragment(), DetailFragment.TAG)
-                        .commit();
-            }
-        } else {
-            mTwoPane = false;
-            getSupportActionBar().setElevation(0f);
-        }
+//        if (findViewById(R.id.movie_detail_container) != null) {
+//            mTwoPane = true;
+//
+//            if (savedInstanceState == null) {
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.movie_detail_container, new DetailFragment(), DetailFragment.TAG)
+//                        .commit();
+//            }
+//        } else {
+//            mTwoPane = false;
+//            getSupportActionBar().setElevation(0f);
+//        }
     }
 
     @Override
