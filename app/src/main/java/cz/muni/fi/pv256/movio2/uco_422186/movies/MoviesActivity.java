@@ -33,7 +33,9 @@ public class MoviesActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(CURRENT_FILTERING_KEY, mMoviesMvpTabletController.getFiltering());
-        outState.putLong(CURRENT_MOVIE_ID_KEY, mMoviesMvpTabletController.getMovieId());
+        if (mMoviesMvpTabletController.getMovieId() != null) {
+            outState.putLong(CURRENT_MOVIE_ID_KEY, mMoviesMvpTabletController.getMovieId());
+        }
         super.onSaveInstanceState(outState);
     }
 }

@@ -9,6 +9,7 @@ import cz.muni.fi.pv256.movio2.uco_422186.MainActivity;
 import cz.muni.fi.pv256.movio2.uco_422186.dto.APIResult;
 import cz.muni.fi.pv256.movio2.uco_422186.helpers.TimeHelpers;
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
+import cz.muni.fi.pv256.movio2.uco_422186.movies.MoviesFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,7 +29,7 @@ public class FetchTheatreMoviesService extends FetchService {
             public void onResponse(@NonNull Call<APIResult> call, @NonNull Response<APIResult> response) {
                 APIResult result = response.body();
                 ArrayList<Movie> movies = getMoviesFromResponse(result);
-                notifyActivity(MainActivity.ResponseReceiver.THEATRE_MOVIES, movies);
+                notifyActivity(MoviesFragment.ResponseReceiver.THEATRE_MOVIES, movies);
             }
 
             @Override

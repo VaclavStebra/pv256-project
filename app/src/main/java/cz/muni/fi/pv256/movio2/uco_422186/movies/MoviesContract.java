@@ -11,17 +11,29 @@ public interface MoviesContract {
 
         void showMovies(List<Movie> movies);
 
+        void showMovies(List<Movie> theatreMovies, List<Movie> newReleases);
+
         void showMovieDetailsUi(Movie movie);
 
         void showNoMovies();
+
+        void showFetchingMoviesNotification();
+
+        void showMoviesFetchedNotification();
+
+        void loadFavoriteMovies();
     }
 
     interface Presenter {
 
         void loadMovies();
 
-        void onMoviesResult();
+        void favoriteMoviesLoaded(List<Movie> movies);
 
         void openMovieDetails(Movie requestedMovie);
+
+        void setFiltering(MoviesFilterType filtering);
+
+        MoviesFilterType getFiltering();
     }
 }

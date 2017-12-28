@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
+import cz.muni.fi.pv256.movio2.uco_422186.movies.MoviesFragment;
 
 public class MoviesRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -27,9 +28,9 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private List<Item> mItems;
     private int mSecondHeaderPosition;
     private boolean hasSections;
-    private MainFragment.OnMovieClickListener mMovieClickListener;
+    private MoviesFragment.OnMovieClickListener mMovieClickListener;
 
-    public MoviesRecyclerAdapter(Context context, List<Movie> theatreMovies, List<Movie> newMovies, MainFragment.OnMovieClickListener listener) {
+    public MoviesRecyclerAdapter(Context context, List<Movie> theatreMovies, List<Movie> newMovies, MoviesFragment.OnMovieClickListener listener) {
         mContext = context;
         mMovieClickListener = listener;
         hasSections = true;
@@ -45,7 +46,7 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    public MoviesRecyclerAdapter(Context context, List<Movie> movies, MainFragment.OnMovieClickListener listener) {
+    public MoviesRecyclerAdapter(Context context, List<Movie> movies, MoviesFragment.OnMovieClickListener listener) {
         mContext = context;
         hasSections = false;
         mMovieClickListener = listener;

@@ -106,7 +106,7 @@ public class MoviesMvpController {
         return mMoviesPresenter.getFiltering();
     }
 
-    public long getMovieId() {
+    public Long getMovieId() {
         return mMovieId;
     }
 
