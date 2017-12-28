@@ -33,7 +33,7 @@ public class MoviesPresenter implements MoviesContract.Presenter,
         if (movies.size() > 0) {
             mMoviesView.showMovies(movies);
         } else {
-            mMoviesView.showNoMovies();
+            mMoviesView.showNoFavoriteMovies();
         }
     }
 

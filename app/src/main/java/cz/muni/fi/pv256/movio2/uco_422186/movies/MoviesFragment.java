@@ -188,6 +188,17 @@ public class MoviesFragment extends Fragment implements MoviesContract.View,
 
     @Override
     public void showNoMovies() {
+        mEmptyTheatreMoviesView.setText(mContext.getString(R.string.no_data));
+        toggleNoMoviesViews();
+    }
+
+    @Override
+    public void showNoFavoriteMovies() {
+        mEmptyTheatreMoviesView.setText(mContext.getString(R.string.no_favorite_movies));
+        toggleNoMoviesViews();
+    }
+
+    private void toggleNoMoviesViews() {
         mEmptyTheatreMoviesView.setVisibility(View.VISIBLE);
         mTheatreMoviesRecyclerView.setVisibility(View.GONE);
     }

@@ -17,6 +17,8 @@ public interface MoviesContract {
 
         void showNoMovies();
 
+        void showNoFavoriteMovies();
+
         void showFetchingMoviesNotification();
 
         void showMoviesFetchedNotification();

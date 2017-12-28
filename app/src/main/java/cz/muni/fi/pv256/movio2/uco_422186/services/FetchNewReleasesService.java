@@ -36,6 +36,7 @@ public class FetchNewReleasesService extends FetchService {
             public void onFailure(@NonNull Call<APIResult> call, @NonNull Throwable t) {
                 call.cancel();
                 fetchError();
+                notifyActivity(MoviesFragment.ResponseReceiver.NEW_RELEASES, new ArrayList<Movie>());
             }
         });
     }

@@ -36,6 +36,7 @@ public class FetchTheatreMoviesService extends FetchService {
             public void onFailure(@NonNull Call<APIResult> call, @NonNull Throwable t) {
                 call.cancel();
                 fetchError();
+                notifyActivity(MoviesFragment.ResponseReceiver.THEATRE_MOVIES, new ArrayList<Movie>());
             }
         });
     }
