@@ -44,7 +44,7 @@ public class FetchTheatreMoviesService {
             @Override
             public void onResponse(Call<APIResult> call, Response<APIResult> response) {
                 APIResult result = response.body();
-                setThatreMovies(result);
+                setTheatreMovies(result);
                 notifyActivity();
             }
 
@@ -68,10 +68,12 @@ public class FetchTheatreMoviesService {
         });
     }
 
-    private void setThatreMovies(APIResult result) {
+    private void setTheatreMovies(APIResult result) {
         Movies.theaterMovies = new ArrayList<>();
-        for (MovieDTO movieDTO : result.movies) {
-            Movies.theaterMovies.add(DtoMapper.mapDTOToMovie(movieDTO));
+        if (result != null && result.movies != null) {
+            for (MovieDTO movieDTO : result.movies) {
+                Movies.theaterMovies.add(DtoMapper.mapDTOToMovie(movieDTO));
+            }
         }
     }
 

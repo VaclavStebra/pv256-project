@@ -66,8 +66,10 @@ public class FetchNewMoviesService {
 
     private void setNewMovies(APIResult result) {
         Movies.newMovies = new ArrayList<>();
-        for (MovieDTO movieDTO : result.movies) {
-            Movies.newMovies.add(DtoMapper.mapDTOToMovie(movieDTO));
+        if (result != null && result.movies != null) {
+            for (MovieDTO movieDTO : result.movies) {
+                Movies.newMovies.add(DtoMapper.mapDTOToMovie(movieDTO));
+            }
         }
     }
 
