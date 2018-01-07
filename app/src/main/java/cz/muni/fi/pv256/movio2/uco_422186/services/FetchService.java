@@ -44,11 +44,13 @@ public class FetchService {
 
     protected ArrayList<Movie> getMoviesFromResponse(APIResult result) {
         ArrayList<Movie> movies = new ArrayList<>();
-        for (MovieDTO movieDTO : result.movies) {
-            Movie movie = DtoMapper.mapDTOToMovie(movieDTO);
-            Movie dbMovie = mMoviesRepository.getFavoriteMovie(movie);
-            movie.setFavorite(dbMovie != null);
-            movies.add(movie);
+        if (result != null && result.movies != null) {
+            for (MovieDTO movieDTO : result.movies) {
+                Movie movie = DtoMapper.mapDTOToMovie(movieDTO);
+                Movie dbMovie = mMoviesRepository.getFavoriteMovie(movie);
+                movie.setFavorite(dbMovie != null);
+                movies.add(movie);
+            }
         }
         return movies;
     }
