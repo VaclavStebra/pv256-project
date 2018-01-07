@@ -4,4 +4,6 @@
     <string name="movie3_btn">Film 3</string>
     <string name="preview">Náhled</string>
     <string name="no_data">Žádné data (Zkontrolujte připojení k intenetu)</string>
+    <string name="theatre_movies">V kinech</string>
+    <string name="new_movies">Novinky</string>
 </resources>

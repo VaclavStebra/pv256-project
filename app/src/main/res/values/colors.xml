@@ -13,5 +13,6 @@
     <color name="secondary_accent">#9F8274</color>
 
     <color name="opaque_black">#33000000</color>
+    <color name="black">#000</color>
 
 </resources>

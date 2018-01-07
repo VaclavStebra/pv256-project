@@ -10,13 +10,17 @@ public class Movie implements Parcelable {
     private String mTitle;
     private String mBackdrop;
     private float mPopularity;
+    private String mOverview;
+    public static final String BASE_BACKDROP_URL = "http://image.tmdb.org/t/p/w300/";
+    public static final String BASE_COVER_URL = "http://image.tmdb.org/t/p/w500/";
 
-    public Movie(long releaseDate, String coverPath, String title, String backdrop, float popularity) {
+    public Movie(long releaseDate, String coverPath, String title, String backdrop, float popularity, String overview) {
         this.mReleaseDate = releaseDate;
         this.mCoverPath = coverPath;
         this.mTitle = title;
         this.mBackdrop = backdrop;
         this.mPopularity = popularity;
+        this.mOverview = overview;
     }
 
     private Movie(Parcel in) {
@@ -25,6 +29,7 @@ public class Movie implements Parcelable {
         mTitle = in.readString();
         mBackdrop = in.readString();
         mPopularity = in.readFloat();
+        mOverview = in.readString();
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -51,6 +56,7 @@ public class Movie implements Parcelable {
         dest.writeString(mTitle);
         dest.writeString(mBackdrop);
         dest.writeFloat(mPopularity);
+        dest.writeString(mOverview);
     }
 
     public long getReleaseDate() {
@@ -91,5 +97,13 @@ public class Movie implements Parcelable {
 
     public void setPopularity(float popularity) {
         this.mPopularity = popularity;
+    }
+
+    public String getOverview() {
+        return mOverview;
+    }
+
+    public void setOverview(String overview) {
+        mOverview = overview;
     }
 }
