@@ -1,20 +1,24 @@
 package cz.muni.fi.pv256.movio2.uco_422186;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
-import cz.muni.fi.pv256.movio2.uco_422186.tasks.FetchNewMoviesTask;
-import cz.muni.fi.pv256.movio2.uco_422186.tasks.FetchTheatreMoviesTask;
+import cz.muni.fi.pv256.movio2.uco_422186.services.FetchMoviesIntentService;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.OnMovieSelectListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private FetchTheatreMoviesTask mFetchTheatreMoviesTask;
-    private FetchNewMoviesTask mFetchNewMoviesTask;
+    private ResponseReceiver mReceiver;
 
     private boolean mTwoPane;
 
@@ -37,17 +41,34 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
             mTwoPane = false;
             getSupportActionBar().setElevation(0f);
         }
+
+        IntentFilter filter = new IntentFilter(ResponseReceiver.ACTION_RESPONSE);
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        mReceiver = new ResponseReceiver();
+        registerReceiver(mReceiver, filter);
     }
 
     public void fetchMovies() {
-        if (mFetchTheatreMoviesTask == null) {
-            mFetchTheatreMoviesTask = new FetchTheatreMoviesTask(MainActivity.this);
-            mFetchTheatreMoviesTask.execute();
-        }
-        if (mFetchNewMoviesTask == null) {
-            mFetchNewMoviesTask = new FetchNewMoviesTask(MainActivity.this);
-            mFetchNewMoviesTask.execute();
-        }
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        Notification n = new Notification.Builder(this)
+                .setContentTitle("Fetching movie list")
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentIntent(pIntent)
+                .setAutoCancel(true)
+                .build();
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(0, n);
+
+        Intent fetchTheatreMoviesIntent = new Intent(this, FetchMoviesIntentService.class);
+        fetchTheatreMoviesIntent.putExtra(FetchMoviesIntentService.MOVIES_CATEGORY, FetchMoviesIntentService.THEATRE_MOVIES);
+        startService(fetchTheatreMoviesIntent);
+
+        Intent fetchNewMoviesIntent = new Intent(this, FetchMoviesIntentService.class);
+        fetchNewMoviesIntent.putExtra(FetchMoviesIntentService.MOVIES_CATEGORY, FetchMoviesIntentService.NEW_MOVIES);
+        startService(fetchNewMoviesIntent);
     }
 
     @Override
@@ -66,24 +87,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (mFetchTheatreMoviesTask != null) {
-            mFetchTheatreMoviesTask.cancel(true);
-        }
-
-        if (mFetchTheatreMoviesTask != null) {
-            mFetchNewMoviesTask.cancel(true);
-        }
-    }
-
-    public void onTheatreTaskFinished() {
-        mFetchTheatreMoviesTask = null;
-        updateMoviesView();
-    }
-
     private void updateMoviesView() {
         MainFragment mainFragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_main);
         if (mainFragment != null) {
@@ -91,8 +94,26 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMo
         }
     }
 
-    public void onNewMoviesTaskFinished() {
-        mFetchNewMoviesTask = null;
-        updateMoviesView();
+    public class ResponseReceiver extends BroadcastReceiver {
+        public static final String ACTION_RESPONSE =
+                "cz.muni.fi.pv256.movio2.uco_422186.ACTION_RESPONSE";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateMoviesView();
+
+            Intent appIntent = new Intent(MainActivity.this, MainActivity.class);
+            PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, 0, appIntent, 0);
+
+            Notification n = new Notification.Builder(MainActivity.this)
+                    .setContentTitle("Movie list fetched")
+                    .setSmallIcon(R.mipmap.ic_launcher_round)
+                    .setContentIntent(pIntent)
+                    .setAutoCancel(true)
+                    .build();
+
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.notify(0, n);
+        }
     }
 }
