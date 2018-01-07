@@ -68,12 +68,14 @@ public class FetchNewMoviesService {
 
     private void setNewMovies(APIResult result) {
         Movies.newMovies = new ArrayList<>();
-        for (MovieDTO movieDTO : result.movies) {
-            Movie movie = DtoMapper.mapDTOToMovie(movieDTO);
-            MoviesManager moviesManager = new MoviesManager(mContext);
-            Movie dbMovie = moviesManager.getMovie(movie);
-            movie.setFavorite(dbMovie != null);
-            Movies.newMovies.add(movie);
+        if (result != null && result.movies != null) {
+            for (MovieDTO movieDTO : result.movies) {
+                Movie movie =DtoMapper.mapDTOToMovie(movieDTO);
+                MoviesManager moviesManager = new MoviesManager(mContext);
+                Movie dbMovie = moviesManager.getMovie(movie);
+                movie.setFavorite(dbMovie != null);
+                Movies.newMovies.add(movie);
+            }
         }
     }
 
