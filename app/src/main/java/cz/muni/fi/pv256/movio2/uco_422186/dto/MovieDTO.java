@@ -3,6 +3,8 @@ package cz.muni.fi.pv256.movio2.uco_422186.dto;
 import com.google.gson.annotations.SerializedName;
 
 public class MovieDTO {
+    @SerializedName("id")
+    public long id;
     @SerializedName("title")
     public String title;
     @SerializedName("release_date")

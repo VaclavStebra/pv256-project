@@ -5,31 +5,44 @@ import android.os.Parcelable;
 
 public class Movie implements Parcelable {
 
+    private long mId;
     private long mReleaseDate;
     private String mCoverPath;
     private String mTitle;
     private String mBackdrop;
     private float mPopularity;
     private String mOverview;
+    private boolean mIsFavorite;
     public static final String BASE_BACKDROP_URL = "http://image.tmdb.org/t/p/w300/";
     public static final String BASE_COVER_URL = "http://image.tmdb.org/t/p/w500/";
 
-    public Movie(long releaseDate, String coverPath, String title, String backdrop, float popularity, String overview) {
-        this.mReleaseDate = releaseDate;
-        this.mCoverPath = coverPath;
-        this.mTitle = title;
-        this.mBackdrop = backdrop;
-        this.mPopularity = popularity;
-        this.mOverview = overview;
+    public Movie() {}
+
+    public Movie(long id, long releaseDate, String coverPath, String title, String backdrop, float popularity, String overview) {
+        mId = id;
+        mReleaseDate = releaseDate;
+        mCoverPath = coverPath;
+        mTitle = title;
+        mBackdrop = backdrop;
+        mPopularity = popularity;
+        mOverview = overview;
+        mIsFavorite = false;
+    }
+
+    public Movie(long id, long releaseDate, String coverPath, String title, String backdrop, float popularity, String overview, boolean isFavorite) {
+        this(id, releaseDate, coverPath, title, backdrop, popularity, overview);
+        mIsFavorite = isFavorite;
     }
 
     private Movie(Parcel in) {
+        mId = in.readLong();
         mReleaseDate = in.readLong();
         mCoverPath = in.readString();
         mTitle = in.readString();
         mBackdrop = in.readString();
         mPopularity = in.readFloat();
         mOverview = in.readString();
+        mIsFavorite = in.readByte() != 0;
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -51,12 +64,22 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(mId);
         dest.writeLong(mReleaseDate);
         dest.writeString(mCoverPath);
         dest.writeString(mTitle);
         dest.writeString(mBackdrop);
         dest.writeFloat(mPopularity);
         dest.writeString(mOverview);
+        dest.writeByte((byte) (mIsFavorite ? 1 : 0));
+    }
+
+    public long getId() {
+        return mId;
+    }
+
+    public void setId(long id) {
+        mId = id;
     }
 
     public long getReleaseDate() {
@@ -105,5 +128,36 @@ public class Movie implements Parcelable {
 
     public void setOverview(String overview) {
         mOverview = overview;
+    }
+
+    public boolean isFavorite() {
+        return mIsFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        mIsFavorite = favorite;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Movie movie = (Movie) o;
+
+        return mId == movie.mId;
+    }
+
+    @Override
+    public int hashCode() {
+        return ((Long) mId).hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + mId +
+                ", title=" + mTitle +
+                '}';
     }
 }

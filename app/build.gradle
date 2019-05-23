@@ -91,6 +91,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:4.3.1'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'net.danlew:android.joda:2.7.2'
 
     annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
 
