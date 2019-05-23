@@ -1,4 +1,4 @@
-package cz.muni.fi.pv256.movio2.uco_422186.data;
+package cz.muni.fi.pv256.movio2.uco_422186.data.source.local;
 
 import android.content.ContentUris;
 import android.net.Uri;

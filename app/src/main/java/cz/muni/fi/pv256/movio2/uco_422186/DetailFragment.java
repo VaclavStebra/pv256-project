@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +15,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movies;
-import cz.muni.fi.pv256.movio2.uco_422186.data.MoviesManager;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.MoviesRepository;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.MoviesRepositoryImpl;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.local.MoviesManager;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.remote.MoviesRemoteDataSource;
 import cz.muni.fi.pv256.movio2.uco_422186.helpers.TimeHelpers;
-import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
+import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
 
 public class DetailFragment extends Fragment {
 
     public static final String TAG = DetailFragment.class.getSimpleName();
     private static final String ARGS_MOVIE = "args_movie";
-    private MoviesManager mMoviesManager;
+    private MoviesRepository mMoviesRepository;
 
     private Context mContext;
     private Movie mMovie;
@@ -45,7 +47,10 @@ public class DetailFragment extends Fragment {
         if (args != null) {
             mMovie = args.getParcelable(ARGS_MOVIE);
         }
-        mMoviesManager = new MoviesManager(getContext());
+
+        Context context = getContext();
+        mMoviesRepository = MoviesRepositoryImpl.getInstance(MoviesRemoteDataSource.getInstance(context),
+                new MoviesManager(context));
     }
 
     @Nullable
@@ -68,7 +73,7 @@ public class DetailFragment extends Fragment {
 
         movieTitle.setText(mMovie.getTitle());
         movieRelease.setText(TimeHelpers.formatDateForDetailView(mMovie.getReleaseDate()));
-        moviePopularity.setText(String.format("%.1f", mMovie.getPopularity()) + " / 5");
+        moviePopularity.setText(String.format("%.1f", mMovie.getPopularity()));
         movieOverview.setText(mMovie.getOverview());
 
         RequestOptions options = new RequestOptions();
@@ -83,7 +88,7 @@ public class DetailFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mMoviesManager.createMovie(mMovie);
+                mMoviesRepository.addFavoriteMovie(mMovie);
                 mMovie.setFavorite(true);
                 updateMovieInCache();
                 toggleFabIcon(fab, fabRemove);
@@ -93,7 +98,7 @@ public class DetailFragment extends Fragment {
         fabRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mMoviesManager.deleteMovie(mMovie);
+                mMoviesRepository.removeFavoriteMovie(mMovie);
                 mMovie.setFavorite(false);
                 updateMovieInCache();
                 toggleFabIcon(fab, fabRemove);

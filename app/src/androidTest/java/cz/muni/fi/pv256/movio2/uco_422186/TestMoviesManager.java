@@ -6,10 +6,10 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.muni.fi.pv256.movio2.uco_422186.data.MoviesContract;
-import cz.muni.fi.pv256.movio2.uco_422186.data.MoviesManager;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.local.MoviesContract;
+import cz.muni.fi.pv256.movio2.uco_422186.data.source.local.MoviesManager;
 import cz.muni.fi.pv256.movio2.uco_422186.helpers.TimeHelpers;
-import cz.muni.fi.pv256.movio2.uco_422186.models.Movie;
+import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
 
 public class TestMoviesManager extends AndroidTestCase {
     private static final String TAG = TestMoviesManager.class.getSimpleName();

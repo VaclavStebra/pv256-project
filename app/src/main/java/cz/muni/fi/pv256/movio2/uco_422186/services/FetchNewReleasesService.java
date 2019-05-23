@@ -13,22 +13,22 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FetchTheatreMoviesService extends FetchService {
+public class FetchNewReleasesService extends FetchService {
 
-    public FetchTheatreMoviesService(Context context) {
+    public FetchNewReleasesService(Context context) {
         super(context);
     }
 
     public void fetch() {
         MovioDbService service = buildService();
-        Call<APIResult> call = service.theatreMovies(TimeHelpers.getNowReleaseDate(), TimeHelpers.getEndReleaseDate());
+        Call<APIResult> call = service.newMovies(TimeHelpers.getNowReleaseDate(), TimeHelpers.getWeekFromNowDate());
         call.enqueue(new Callback<APIResult>() {
 
             @Override
             public void onResponse(@NonNull Call<APIResult> call, @NonNull Response<APIResult> response) {
                 APIResult result = response.body();
                 ArrayList<Movie> movies = getMoviesFromResponse(result);
-                notifyActivity(MainActivity.ResponseReceiver.THEATRE_MOVIES, movies);
+                notifyActivity(MainActivity.ResponseReceiver.NEW_RELEASES, movies);
             }
 
             @Override

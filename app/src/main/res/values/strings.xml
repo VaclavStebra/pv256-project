@@ -9,4 +9,7 @@
 
     <string name="content_authority" translatable="false">cz.muni.fi.pv256.movio2.uco_422186.app</string>
     <string name="favorites">Favorites</string>
+    <string name="app_name">Movio2</string>
+    <string name="sync_account_type">cz.muni.fi.pv256.movio2.uco_422186.data.sync</string>
+    <string name="sync">Sync</string>
 </resources>

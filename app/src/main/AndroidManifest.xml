@@ -2,7 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cz.muni.fi.pv256.movio2.uco_422186">
 
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+
     <uses-permission android:name="android.permission.INTERNET" />
+
 
     <application
         android:name=".App"
@@ -22,10 +27,35 @@
 
         <activity android:name=".MovieDetailActivity" />
 
-        <service android:name=".services.FetchMoviesIntentService" />
+        <service android:name=".services.FetchNewReleasesIntentService" />
+        <service android:name=".services.FetchTheatreMoviesIntentService" />
+        <service android:name=".services.FetchMovieIntentService" />
+
+        <service android:name=".data.sync.UpdaterAuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+
+        <service
+            android:name=".data.sync.UpdaterSyncService"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
+
         <provider
             android:authorities="@string/content_authority"
-            android:name=".data.MoviesProvider"
+            android:name=".data.source.local.MoviesProvider"
             android:exported="false" />
     </application>
 

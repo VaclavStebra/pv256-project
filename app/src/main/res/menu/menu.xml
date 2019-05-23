@@ -5,4 +5,7 @@
         android:title="@string/favorites"
         app:showAsAction="never"
         android:checkable="true" />
+    <item android:id="@+id/sync_btn"
+        android:title="@string/sync"
+        app:showAsAction="never" />
 </menu>

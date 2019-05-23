@@ -7,4 +7,5 @@
     <string name="theatre_movies">V kinech</string>
     <string name="new_movies">Novinky</string>
     <string name="favorites">Oblíbené</string>
+    <string name="sync">Sync</string>
 </resources>
