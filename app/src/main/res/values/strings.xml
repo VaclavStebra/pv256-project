@@ -4,12 +4,14 @@
     <string name="movie3_btn">Movie 3</string>
     <string name="preview">Preview</string>
     <string name="no_data">No data (Check your network connection)</string>
+    <string name="no_favorite_movies">You have no favorite movies</string>
     <string name="theatre_movies">In Theatres</string>
     <string name="new_movies">New movies</string>
 
     <string name="content_authority" translatable="false">cz.muni.fi.pv256.movio2.uco_422186.app</string>
     <string name="favorites">Favorites</string>
-    <string name="app_name">Movio2</string>
-    <string name="sync_account_type">cz.muni.fi.pv256.movio2.uco_422186.data.sync</string>
+    <string name="app_name" translatable="false">Movio2</string>
+    <string name="sync_account_type" translatable="false">cz.muni.fi.pv256.movio2.uco_422186.data.sync</string>
     <string name="sync">Sync</string>
+    <string name="no_movie_selected">No movie selected</string>
 </resources>

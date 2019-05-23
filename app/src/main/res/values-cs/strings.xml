@@ -4,8 +4,10 @@
     <string name="movie3_btn">Film 3</string>
     <string name="preview">Náhled</string>
     <string name="no_data">Žádné data (Zkontrolujte připojení k intenetu)</string>
+    <string name="no_favorite_movies">Nemáte žádné oblíbené filmy</string>
     <string name="theatre_movies">V kinech</string>
     <string name="new_movies">Novinky</string>
     <string name="favorites">Oblíbené</string>
     <string name="sync">Sync</string>
+    <string name="no_movie_selected">Nemáte vybraný žádný film</string>
 </resources>

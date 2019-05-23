@@ -5,10 +5,10 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
-import cz.muni.fi.pv256.movio2.uco_422186.MainActivity;
 import cz.muni.fi.pv256.movio2.uco_422186.dto.APIResult;
 import cz.muni.fi.pv256.movio2.uco_422186.helpers.TimeHelpers;
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
+import cz.muni.fi.pv256.movio2.uco_422186.movies.MoviesFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,13 +28,14 @@ public class FetchNewReleasesService extends FetchService {
             public void onResponse(@NonNull Call<APIResult> call, @NonNull Response<APIResult> response) {
                 APIResult result = response.body();
                 ArrayList<Movie> movies = getMoviesFromResponse(result);
-                notifyActivity(MainActivity.ResponseReceiver.NEW_RELEASES, movies);
+                notifyActivity(MoviesFragment.ResponseReceiver.NEW_RELEASES, movies);
             }
 
             @Override
             public void onFailure(@NonNull Call<APIResult> call, @NonNull Throwable t) {
                 call.cancel();
                 fetchError();
+                notifyActivity(MoviesFragment.ResponseReceiver.NEW_RELEASES, new ArrayList<Movie>());
             }
         });
     }

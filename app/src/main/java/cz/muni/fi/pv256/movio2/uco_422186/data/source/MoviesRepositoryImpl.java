@@ -3,6 +3,7 @@ package cz.muni.fi.pv256.movio2.uco_422186.data.source;
 import android.support.annotation.NonNull;
 
 import java.util.List;
+import java.util.Map;
 
 import cz.muni.fi.pv256.movio2.uco_422186.data.Movie;
 import cz.muni.fi.pv256.movio2.uco_422186.data.source.local.MoviesManager;
